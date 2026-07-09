@@ -1,7 +1,7 @@
 # NEATO
 (Norms Expressed As a Tool for Operating systems)
 
-NEATO is a standard that defines a standard interface for Neetcomputers operating systems and their method of booting. This is mostly because the encourages making your own operating systems, and while I think we can all agree that is very sick, it does create a problem of application compatibility.
+NEATO is a standard that defines an for Neetcomputers operating systems and their method of booting. This is mostly because the encourages making your own operating systems, and while I think we can all agree that is very sick, it does create a problem of application compatibility.
 
 The standards are not meant to be super strict rules, but rather a small shim over the already existing functions that Neetcomputers offers, with basic things added most applications would need, such as terminal emulation or standards for how arguments should work. 
 
