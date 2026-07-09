@@ -12,7 +12,7 @@ A NEATO compatible boot.lua might appear like this:
 
 ```lua
 return {
-  1 = {
+  [1] = {
     ["OS Name"] = "NeetOS",
     ["OS Version"] = "0.2.4",
     ["OS Description"] = "The NeetComputers Operating System",
@@ -23,7 +23,7 @@ return {
       ["VAR2"] = "Hi",
     },
   },
-  2 = {
+  [2] = {
     ...
   },
 }
