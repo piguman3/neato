@@ -10,3 +10,5 @@ Of course, an OS can comply with these rules however it likes to, as long as the
 API definitions, aka stuff to do with the application's environment, like functions or events, go in the `api` folder.
 
 Definitions about the boot process, aka stuff about how OSes are to be booted (which is useful for bootloaders or bioses), go in the `boot` folder.
+
+Common formats that are shared between the API definitions and the boot related definitions are defined in `common.md`.
