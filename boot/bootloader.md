@@ -31,7 +31,7 @@ return {
 
 NEATO compatible bootloaders must support ALL fields defined, as well as supporting multiple operating systems defined in `boot.lua`.
 
-The `OS Args` field must take in either a string, or a table (as shown).
+The `OS Args` field must take in either a string, e.g. "EXAMPLEARG=1" or a table (as shown).
 
 Arguments must be passed into the boot path as provided, so a table must pass into the boot path as ("-v", "-f") for example, or as a string, must pass in as "EXAMPLEARG=1".
 
