@@ -4,6 +4,8 @@ Written by SpSf July 9, 2026
 
 Revision 1
 
+Last updated in NEATO version alpha
+
 ---
 
 A NEATO compatible bootloader must obtain the `boot.lua` file from `any:system:/boot/cfg/boot.lua`.

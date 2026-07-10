@@ -1,5 +1,6 @@
 # NEATO
 (Norms Expressed As a Tool for Operating systems)
+### Latest version: alpha
 
 NEATO is a standard that defines an for Neetcomputers operating systems and their method of booting. This is mostly because the encourages making your own operating systems, and while I think we can all agree that is very sick, it does create a problem of application compatibility.
 
