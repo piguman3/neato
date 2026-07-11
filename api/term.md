@@ -30,3 +30,5 @@ RGB values work the same as in the default Neetcomputers API, going from 0 to 25
 | term.setTextColor | Gets the foreground text color's RGB value. | none | r (int), g (int), b (int) |
 | term.scroll | Scrolls the entire screen vertically up by `n` characters. | n (int) | none |
 | print | Prints all of its arguments (converted to strings), separated by a tab character (`\t`), as a formatted string of text on screen, starting a new line on `\n` and wrapping at the edge of the terminal screen. | args, ... (any) | nil |
+
+Note on `print`: obviously, this function overrides the original function that prints to the Minecraft console. We decided on this mostly because this feature is disabled by default, doesn't work in multiplayer servers where you can't see the terminal, (or vanilla singleplayer clients) and because even then it feels like something only the OS developer should have access to. Also, to be clear, `print` not being prefixed by `term.` is intentional, as in vanilla Lua `print` isn't part of any table, and shouldn't be in a NEATO environment.
