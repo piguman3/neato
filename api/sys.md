@@ -2,7 +2,9 @@
 
 Written by UsUsStudios July 10th, 2026
 
-Draft 1
+Revision 1
+
+Added in NEATO version alpha
 
 Last updated in NEATO version alpha
 
