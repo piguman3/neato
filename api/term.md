@@ -12,7 +12,7 @@ Last updated in NEATO version alpha
 
 Programs running under NEATO are able to access a "term" API that provides functions for interacting with a terminal emulator.
 
-This terminal emulator is defined by a matrix of characters (each with colored background cells) that can be addressed with X and Y positions (starting at 1, at the top left corner), and it should internally keep track of a cursor that the program can control to select where to perform operations on the screen. This is very similar to Computercraft's terminal API.
+This terminal emulator is defined by a matrix of characters (each with colored background cells) that can be addressed with X and Y positions (starting at 1, at the top left corner), and it should internally keep track of a cursor that the program can control to select where to perform operations on the screen, and keep track of the current background and foreground color things will be printed in. This is very similar to Computercraft's terminal API.
 
 RGB values work the same as in the default Neetcomputers API, going from 0 to 255.
 
