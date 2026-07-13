@@ -23,7 +23,7 @@ print(Sys.GetOSName())
   -> "OS Name"
 ```
 ```lua
-print(Sys.GetOSName()) 
+print(Sys.GetOSVersion()) 
   -> "v1.5.4"
 ```
 ```lua
