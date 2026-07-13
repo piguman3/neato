@@ -1,14 +1,12 @@
 # NEATO API
 
-Application environment related specifications.
+Program API environment specifications.
 
-So basically, the NEATO API is the default _G, events and handlers of the normal Neetcomputers API, with changes and additions defined by the specifications.
+The NEATO API consists of the default _G, events and handlers of the provided NEET Computers API, with changes and additions defined by the specifications.
 
-This *doesn't* mean that the API has to behave exactly the same as the normal Neetcomputers API, or that it can't have additions from the OS developer, but rather that the expected parameters and return types are the same across all OSes.
+This does not require the API to explicitly behave the same as stock NEET Computers API, or that it cannot have additions from an operating system, but rather that the expected parameters and return types are the same across all OSes.
 
-For example, in a GUI based operating system based on applications that each get their own window, the OS could modify the behavior of the mouse event to be offset by the window's position, and the graphics API to use a specific layer for the window, rather than the main global layer.
-
-Basically, you can modify the behavior of certain things, but it has to be in a way that preserves compatibility.
+For example, in a GUI based operating system with applications that each get their own window, it may modify the behavior of the mouse event to be offset by the window's position, and the graphics API to use a specific layer for the window, rather than the main global layer, and remain NEATO compliant.
 
 ### Changes to the default API:
 
