@@ -21,4 +21,4 @@ NEATO program API definitions, like functions or events relating to the NEATO bo
 
 NEATO definitions about the NEATO compliant boot process, are placed in the `boot` folder.
 
-Common formats that are shared between NEATO program API definitions and the NEATO boot definitions are defined in `common.md`.
+Common formats that are shared between NEATO program API definitions and the NEATO boot definitions are defined in the `common` folder.
