@@ -22,4 +22,4 @@ Arguably the most important spec in the NEATO API is [globals](globals.md), as i
 
 - [Terminal emulation (term.md)](term.md) - Extra functions for a standardized terminal emulator.
 - [System info (sys.md)](sys.md) - Provides system information to check for OS name, version, and NEATO compatibility.
-- [Current working directory](cwd.md) - Provides information about the current working directory the application was launched in.
+- [Current working directory (cwd.md)](cwd.md) - Provides information about the current working directory the application was launched in.
