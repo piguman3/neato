@@ -12,11 +12,14 @@ For example, in a GUI based operating system with applications that each get the
 of the mouse event to be offset by the window's position, and the graphics API to use a specific layer for the window,
 rather than the main global layer, and remain NEATO compliant.
 
+Arguably the most important spec in the NEATO API is [globals](globals.md), as it defines the entirety of the NEATO environment for clarity, including things that might not have explicit API specs for whatever reason. 
+
 ### Changes to the default API:
 
-_Note: get started writing specs for changes to the default API._
+**Update as of September 18th**: issues have been made about abstracting the default NEET environment, once those are done this section should look a lot better.
 
 ### Additions to the default API:
 
 - [Terminal emulation (term.md)](term.md) - Extra functions for a standardized terminal emulator.
 - [System info (sys.md)](sys.md) - Provides system information to check for OS name, version, and NEATO compatibility.
+- [Current working directory](cwd.md) - Provides information about the current working directory the application was launched in.
