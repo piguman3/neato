@@ -4,7 +4,7 @@ Written by UsUsStudios
 
 Extension: `core`
 
-Version: 1
+Version: 2
 
 ---
 
@@ -17,7 +17,10 @@ running operating system and computer, defined below.
 | sys.getOSVersion  | Returns the version of the active operating system. It is recommended to use [semver](https://semver.org/) versioning.                                                | none                                | The OS version (str)                         |
 | sys.getExtensions | Returns every NEATO extension that the OS supports, as a table from the extension's name to its version. `core` is always in it. See the [main README](../README.md). | none                                | Supported extensions (table from str to int) |
 | sys.hasExtension  | Returns whether the OS supports an extension. If `version` is given, it is only `true` if the OS supports exactly that version of it.                                 | name (str), version (int, optional) | boolean                                      |
-| sys.sleep         | Repeatedly yields until a given number of seconds has passed. Events that arrive while sleeping stay in the event queue.                                              | time (number)                       | nil                                          |
+| sys.sleep         | Repeatedly yields until a given number of seconds has passed. Events that arrive while sleeping stay in the event queue.                                              | time (number)                       | nil, or nil, code and message                |
+
+`sys.sleep` fails with `EINVAL` if `time` is negative. On success it returns `nil`; on failure it returns `nil`, then
+the code, then a message, as defined in [errors.md](../common/errors.md). The other `sys` functions cannot fail.
 
 ---
 
@@ -39,7 +42,7 @@ print(sys.hasExtension("ext.dpp"))
 ```
 
 ```lua
-print(sys.hasExtension("core", 1))
+print(sys.hasExtension("core", 2))
   -> true
 ```
 
@@ -47,6 +50,6 @@ print(sys.hasExtension("core", 1))
 for name, version in pairs(sys.getExtensions()) do
   print(name, version)
 end
-  -> core  1
-     ext.crypto  1
+  -> core  2
+     ext.screen  1
 ```

@@ -2,7 +2,7 @@
 
 Extension: `core`
 
-Version: 1
+Version: 2
 
 ---
 
@@ -19,8 +19,11 @@ An event is a name (a string) followed by zero or more values.
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | -------------------------------- |
 | event.pull  | Waits until an event is available and removes it from the queue. If `filter` is given, events with a different name are removed and discarded while waiting. If `timeout` seconds pass first, returns `nil`. Yields while waiting. | filter (string?), timeout (number?) | name (string), ... (any), or nil |
 | event.poll  | Removes and returns the next event without waiting, or returns `nil` if the queue is empty.                                                                                                                                        | none                                | name (string), ... (any), or nil |
-| event.push  | Adds an event to the end of this program's own queue. Returns `false` if the queue is full and the event was dropped.                                                                                                              | name (string), ... (any)            | boolean                          |
+| event.push  | Adds an event to the end of this program's own queue. Fails with `ENOBUFS` if the queue is full and the event was dropped.                                                                                                         | name (string), ... (any)            | true, or nil, code and message   |
 | event.clear | Removes every event from this program's queue.                                                                                                                                                                                     | none                                | nil                              |
+
+`event.push` fails with `ENOBUFS` when the queue is full, returning `nil`, then the code, then a message, as defined in
+[errors.md](../common/errors.md). `event.pull` and `event.poll` returning `nil` is an ordinary answer, not a failure.
 
 ---
 

@@ -64,20 +64,37 @@ should check for the exact version it was written for. There is no version for N
 An extension may require other extensions. An OS that reports an extension must also report
 everything it requires.
 
-Names in the `ext.` namespace listed below as reserved have no specification yet. An OS must not
-report them as supported. This keeps the names free until a specification is written.
+Names in the `ext.` namespace that are reserved have no specification yet (see [Reserved](#reserved)), and names of
+draft extensions (see [Drafts](#drafts)) have one that is not final. An OS must not report either as supported. This
+keeps the names free until a specification is written and final.
 
 ---
 
 ### Extension registry
 
-| Name         | Version | Requires | Specification                                     | Contents                                                               |
-| ------------ | ------- | -------- | ------------------------------------------------- | ---------------------------------------------------------------------- |
-| `core`       | 1       |          | [api/](api/README.md), [common/](common/paths.md) | Lua environment, `sys`, `event`, `term`, `fs`, `print`, `CWD`, paths   |
-| `ext.screen` | 1       | `core`   | [api/screen.md](api/screen.md)                    | NEET Computers `screen` API, possibly redirected to a window or layer. |
-| `ext.dpp`    | 1       | `core`   | [network/dpp.md](network/dpp.md)                  | Direct Payload Protocol.                                               |
+| Name         | Version | Requires | Specification                                                                                   | Contents                                                                                 |
+| ------------ | ------- | -------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `core`       | 2       |          | [api/](api/README.md), [common/paths.md](common/paths.md), [common/errors.md](common/errors.md) | Lua environment, `sys`, `event`, `term`, `fs`, `print`, `CWD`, paths, error codes        |
+| `ext.screen` | 1       | `core`   | [api/screen.md](api/screen.md)                                                                  | NEET Computers `screen` API, possibly redirected to a window or layer.                   |
+| `ext.dpp`    | 2       | `core`   | [network/dpp.md](network/dpp.md)                                                                | Direct Payload Protocol.                                                                 |
+| `ext.spp`    | 2       | `core`   | [network/spp.md](network/spp.md)                                                                | Sequenced Payload Protocol: reliable local connections, pollable handles, peer identity. |
 
-Reserved: `ext.headsup`, `ext.peripherals`, `ext.chip`, `ext.internet`, `ext.partitions`.
+#### Drafts
+
+A draft extension has a specification, but it is not final yet. Its specification file carries a draft notice. An OS
+must not report a draft extension as supported until that notice is removed, so until then the name is reserved in the
+same way as the names below.
+
+| Name            | Version | Requires  | Specification                                  | Contents                                                              |
+| --------------- | ------- | --------- | ---------------------------------------------- | --------------------------------------------------------------------- |
+| `ext.rpp`       | 1       | `core`    | [network/rpp.md](network/rpp.md)               | Routed Packet Protocol: host addresses and routing between computers. |
+| `ext.sppRemote` | 1       | `ext.spp` | [network/spp-remote.md](network/spp-remote.md) | SPP connections between computers (`scope = "network"`).              |
+
+#### Reserved
+
+Reserved: `ext.headsup`, `ext.peripherals`, `ext.chip`, `ext.internet`, and `ext.partitions`. `ext.internet` is the name
+for the raw NEET Computers `internet` API (HTTP and WebSocket) and has nothing to do with the internet layer of NEATO
+Network, which is `ext.rpp`.
 
 Bootloaders are not part of an operating system's program environment, so they are not extensions. They are covered
 by their own specification in [boot/](boot/README.md), which carries its own version number.

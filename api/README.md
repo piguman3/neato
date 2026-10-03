@@ -28,11 +28,14 @@ reserved extension names until they are abstracted.
 - [Terminal emulation (term.md)](term.md) - Functions for a standardized terminal emulator.
 - [System info (sys.md)](sys.md) - OS name and version, extension queries, and sleeping.
 - [Events (event.md)](event.md) - Input and other events delivered to a program.
-- [Files (fs.md)](fs.md) - Files and directories, using the [paths](../common/paths.md) format.
+- [Files (fs.md)](fs.md) - Files and directories, using the [paths](../common/paths.md) format, and [filesystem points](fs.md#filesystem-points).
 - [Current working directory (cwd.md)](cwd.md) - The directory the application was launched in.
 - [Cryptography (crypto.md)](crypto.md) - Cryptography functions.
+- [Error codes (../common/errors.md)](../common/errors.md) - The shared codes every failing API returns.
  
 ### Extensions
 
 - [Screen (screen.md)](screen.md) - `ext.screen`
 - [Direct Payload Protocol (../network/dpp.md)](../network/dpp.md) - `ext.dpp`
+- [Sequenced Payload Protocol (../network/spp.md)](../network/spp.md) - `ext.spp`
+- [Routed Packet Protocol (../network/rpp.md)](../network/rpp.md) - `ext.rpp`

@@ -79,6 +79,6 @@ NEATO compatible bootloaders must respect the Config field.
 `Config.DefaultEntry` is 1-indexed as how Lua tables are indexed. `Config.DefaultEntry` controls which boot entry is first
 shown and selected initially when the bootloader is opened.
 
-`Config.Autoboot` is 1-indexed as how Lua tables are indexed. `Config.Autoboot` if set to `false`, or any other value
-that is not a valid index into `Bootlist`, disables autoboot. If set to an index of `Bootlist` then automatically boots
-into it. NEATO does not define how long it must take, if any time, for `Config.Autoboot` to complete or confirm.
+`Config.Autoboot` is an index into `Bootlist`, 1-indexed as Lua tables are. If it is set to `false`, or any other value
+that is not a valid index into `Bootlist`, autoboot is disabled. If it is set to an index of `Bootlist`, that entry is
+automatically booted. NEATO does not define how long it must take, if any time, for `Config.Autoboot` to complete or confirm.

@@ -4,7 +4,7 @@ Written by piguman3
 
 Extension: `core`
 
-Version: 1
+Version: 2
 
 ---
 
@@ -68,7 +68,8 @@ last argument the cursor moves to column 1 of the next line, as if the output en
 outside the screen when `print` is called, it behaves as if the cursor had been moved to the nearest cell on the
 screen first.
 
-- Passing an argument of the wrong type to any `term` function raises an error.
+- Passing an argument of the wrong type to any `term` function raises an error. No `term` function fails with an error
+  code: a mistake raises, and everything else succeeds, as described in [errors.md](../common/errors.md).
 
 ---
 

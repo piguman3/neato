@@ -12,6 +12,9 @@ system may direct drawing into a window or onto a layer of its own, as long as t
 program's point of view. This is separate from the [terminal](term.md) in `core`, and the two are not required to
 share the same surface.
 
+`screen` keeps the NEET Computers API unchanged, including how it reports its own failures, so it does not use the
+codes in [errors.md](../common/errors.md).
+
 Requires: `core`
 
 ```c
