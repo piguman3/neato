@@ -4,7 +4,7 @@ Extension: `ext.user`
 
 Version: 1
 
-Requires: `core`
+Requires: `core`, `ext.perms`
 
 ---
 
