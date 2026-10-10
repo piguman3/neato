@@ -4,7 +4,7 @@ Written by piguman3
 
 Extension: `core`
 
-Version: 2
+Version: 3
 
 ---
 
@@ -70,6 +70,10 @@ screen first.
 
 - Passing an argument of the wrong type to any `term` function raises an error. No `term` function fails with an error
   code: a mistake raises, and everything else succeeds, as described in [errors.md](../common/errors.md).
+
+- When the operating system also reports [`ext.stdio`](stdio.md), `print` writes to the standard output instead of
+  the terminal, as [stdio.md](stdio.md) defines; when the standard output is not a terminal this replaces the wrapping
+  and scrolling described above. Every `term` function except `print` always acts on the terminal itself.
 
 ---
 

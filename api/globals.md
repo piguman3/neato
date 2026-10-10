@@ -2,7 +2,7 @@
 
 Extension: `core`
 
-Version: 2
+Version: 3
 
 ---
 
@@ -54,6 +54,8 @@ fs
   delete
   open
   resolve
+  rename
+  stat
   getDisks
   getPartitions
   getPoint
@@ -78,9 +80,71 @@ term
 print
 ```
 
+### The program
+
+A NEATO program is a Lua chunk that the operating system loads and runs in the environment described in this file.
+`core` defines how the program is launched and how it ends.
+
+- **Arguments.** The chunk receives the program's arguments as its vararg expression `...`, one string per argument,
+in the order they were given. The program's own name is not included.
+- **Exit status.** When the chunk returns, its first result is the program's exit status: an integer from 0 to 255
+that the operating system may report onward, for example to a shell. Any other result, including no result at all,
+is a status of 0, and an integer outside the range is taken modulo 256. A status of 0 means success and any other
+status means the program chose to report a failure.
+- **Uncaught errors.** An error that is not caught ends the program with a nonzero status of the operating system's
+choice. If [`ext.stdio`](stdio.md) is reported, the operating system may write a diagnostic to `stdio.stderr`.
+- **Termination.** The `terminate` event (see [event.md](event.md)) asks the program to stop. The operating system
+must deliver the event first and let the program react; a program that keeps running may afterwards be ended by the
+operating system, and its status is then an OS-defined value of at least 128.
+
 ### Extension globals
 
 ```c
+// ext.stdio, defined in api/stdio.md
+stdio
+  stdin
+  stdout
+  stderr
+  isatty
+  readLine
+
+// ext.env, defined in api/env.md
+env
+  get
+  set
+  all
+
+// ext.time, defined in api/time.md
+time
+  monotonic
+  wall
+  date
+
+// ext.proc, defined in api/proc.md
+proc
+  getpid
+  getppid
+  exit
+  spawn
+  wait
+  poll
+  kill
+  pipe
+
+// ext.user, defined in api/user.md
+user
+  current
+  byName
+  byId
+  list
+
+// ext.system, defined in api/system.md
+system
+  hostname
+  setHostname
+  machine
+  uptime
+
 // ext.screen, defined in api/screen.md
 screen
 
@@ -107,6 +171,9 @@ rpp
   setRouter
   ping
 ```
+
+The extensions [`ext.perms`](perms.md), [`ext.symlink`](symlink.md) and [`ext.statfs`](statfs.md) define no global
+table of their own: they add functions to the `fs` API instead, as [fs.md](fs.md) describes.
 
 ### Reserved core names (not yet specified)
 

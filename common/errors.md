@@ -2,7 +2,7 @@
 
 Extension: `core`
 
-Version: 2
+Version: 3
 
 ---
 
@@ -43,11 +43,13 @@ must not return a code that is not in this table, and a program must be ready to
 | `EADDRINUSE`   | The port is already in use.                                                               |
 | `EBADF`        | The handle is not open for that operation.                                                |
 | `EBUSY`        | The object is in use and cannot be changed right now.                                     |
+| `ECHILD`       | The process is not a child of the calling program, or has already been waited for.        |
 | `ECONNREFUSED` | Nothing accepted the connection.                                                          |
 | `ECONNRESET`   | The connection ended abnormally.                                                          |
 | `EEXIST`       | The file or directory already exists.                                                     |
 | `EFBIG`        | The file is too large.                                                                    |
 | `EHOSTUNREACH` | There is no route to the host.                                                            |
+| `EINTR`        | The operation was stopped before it finished, by a terminate request.                     |
 | `EINVAL`       | An argument value is not valid.                                                           |
 | `EIO`          | An input/output error happened, and no other code fits.                                   |
 | `EISDIR`       | The path is a directory where a file was expected.                                        |
@@ -57,6 +59,7 @@ must not return a code that is not in this table, and a program must be ready to
 | `ENOBUFS`      | No buffer or queue space is available.                                                    |
 | `ENODEV`       | The disk or device does not exist.                                                        |
 | `ENOENT`       | The file or directory does not exist.                                                     |
+| `ENOEXEC`      | The file is not a program the operating system can run.                                   |
 | `ENOSPC`       | There is no space left on the filesystem.                                                 |
 | `ENOTDIR`      | A path component is not a directory, or a directory was expected and the path is not one. |
 | `ENOTEMPTY`    | The directory is not empty.                                                               |
@@ -65,7 +68,10 @@ must not return a code that is not in this table, and a program must be ready to
 | `EPIPE`        | The connection was closed at the other end.                                               |
 | `ERANGE`       | A value is outside the range the operation allows.                                        |
 | `EROFS`        | The filesystem is read-only.                                                              |
+| `ESPIPE`       | The handle does not support seeking.                                                      |
+| `ESRCH`        | The process does not exist.                                                               |
 | `ETIMEDOUT`    | The operation did not finish in time.                                                     |
+| `EXDEV`        | The operation would have to move the object between filesystems.                          |
 
 ---
 
