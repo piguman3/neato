@@ -2,7 +2,7 @@
 
 Extension: `core`
 
-Version: 2
+Version: 3
 
 ---
 
@@ -13,6 +13,10 @@ boot partition, and so on) are not part of `core`.
 Every path taken by `fs` is in the format defined in [paths.md](../common/paths.md). It may be a full path
 (`disk:partition:/dir/file`) or a path relative to [`CWD`](cwd.md). What a program may see or change is decided by the
 operating system, which may refuse any operation.
+
+An extension may add functions to the `fs` table (for example [`ext.perms`](perms.md) adds `fs.chmod`). An operating
+system must define such a function only when it reports the extension that specifies it, so a program can test for it
+with [`sys.hasExtension`](sys.md) or by checking for `nil`.
 
 On failure, functions that return a result return `nil`, then an error code, then a message, as defined in
 [errors.md](../common/errors.md): the code is one of the required ones listed under [Failure codes](#failure-codes), and
@@ -30,6 +34,8 @@ that is not valid according to `paths.md`, or a value of the wrong type, raises 
 | fs.delete        | Deletes a file or an empty directory. A partition root cannot be deleted.                                                                             | path (string)                | true, or nil, code and message                     |
 | fs.open          | Opens a file. See below.                                                                                                                              | path (string), mode (string) | handle (table), or nil, code and message           |
 | fs.resolve       | Returns the full, normalized form of a path, without checking that it exists. See [paths.md](../common/paths.md). The disk is always given as its ID. | path (string)                | full path (string), or nil, code and message       |
+| fs.rename        | Renames (moves) a file or directory. See [Renaming](#renaming).                                                                                       | old (string), new (string)   | true, or nil, code and message                     |
+| fs.stat          | Returns information about a file or directory. See [File information](#file-information).                                                             | path (string)                | info (table), or nil, code and message             |
 | fs.getDisks      | Returns the disks that are present, in ascending order of slot.                                                                                       | none                         | disks (table of `{slot = int, id = string}`)       |
 | fs.getPartitions | Returns the names of the partitions on a disk.                                                                                                        | disk (int or string)         | names (table of strings), or nil, code and message |
 | fs.getPoint      | Returns the path the operating system uses for a [filesystem point](#filesystem-points). A point the operating system does not provide returns `nil`. | point (string)               | path (string), or nil                              |
@@ -61,6 +67,35 @@ A handle has the following methods, called with `:`. Calling any of them on a cl
 | handle:close | Closes the handle. Handles that are still open when the program ends are closed by the operating system.                                                                                                                                                                     | none                            | true                                                          |
 
 Reading from a handle opened for writing, or writing to a handle opened with `"r"`, fails with `EBADF`.
+
+---
+
+### File information
+
+`fs.stat(path)` returns a table describing the object at the path. The table is a snapshot; it never changes by
+itself afterwards.
+
+| Field  | Type            | Meaning                                                                                                        |
+| ------ | --------------- | -------------------------------------------------------------------------------------------------------------- |
+| `type` | string          | `"file"` or `"dir"`. `"other"` covers everything else (for example a device). `"link"` is used only by the [`ext.symlink`](symlink.md) extension. |
+| `size` | int, optional   | The size in bytes. `nil` when the object has no meaningful size (a directory, for example) or the operating system does not report one. |
+| `mtime` | int, optional  | The last modification time, in seconds on the [`ext.time`](time.md) wall clock. `nil` when the operating system does not track times. |
+
+Fields that are not listed here may be present when an extension that defines them is reported (for example
+[`ext.perms`](perms.md)). A program must ignore any field it does not know. A missing optional field and a field the
+program does not know are both just `nil`, so one table serves every operating system.
+
+---
+
+### Renaming
+
+`fs.rename(old, new)` gives the object at `old` the name `new`. It moves the object, it does not copy it: the data is
+not written twice, and a file that some handle has open stays the same file. The rename happens within the
+filesystems involved, or fails with `EXDEV` when `old` and `new` name different partitions.
+
+A file may be renamed onto an existing file, which replaces it. A directory may be renamed onto an existing
+directory only if that directory is empty, which replaces it. A file may not be renamed onto a directory, a
+directory not onto a file, and a directory not into itself or a directory below itself.
 
 ---
 
@@ -104,6 +139,23 @@ provided.
 | fs.open          | the file cannot be opened for another reason       | `EIO`          |
 | fs.resolve       | the disk cannot be identified                      | `ENODEV`       |
 | fs.resolve       | the path is too long                               | `ENAMETOOLONG` |
+| fs.stat          | nothing exists at the path                         | `ENOENT`       |
+| fs.stat          | a component of the path is not a directory         | `ENOTDIR`      |
+| fs.stat          | the file is not allowed to be examined             | `EACCES`       |
+| fs.stat          | the name is too long                               | `ENAMETOOLONG` |
+| fs.stat          | the file cannot be examined for another reason     | `EIO`          |
+| fs.rename        | the old path, or a parent of the new one, does not exist | `ENOENT` |
+| fs.rename        | a component of a path is not a directory           | `ENOTDIR`      |
+| fs.rename        | the target is a directory and the source is not, or the other way around | `ENOTDIR` |
+| fs.rename        | the target directory exists and is not empty       | `ENOTEMPTY`    |
+| fs.rename        | a directory is moved into itself or below itself   | `EINVAL`       |
+| fs.rename        | the old and new paths are on different partitions  | `EXDEV`        |
+| fs.rename        | the path is a partition root                       | `EPERM`        |
+| fs.rename        | the rename is not allowed                          | `EACCES`       |
+| fs.rename        | a filesystem is read-only                          | `EROFS`        |
+| fs.rename        | the object is in use                               | `EBUSY`        |
+| fs.rename        | a name is too long                                 | `ENAMETOOLONG` |
+| fs.rename        | the file cannot be renamed for another reason      | `EIO`          |
 | fs.getPartitions | the disk does not exist                            | `ENODEV`       |
 | fs.getPartitions | the disk argument is not a valid slot or ID        | `EINVAL`       |
 | fs.getPartitions | the partitions cannot be read                      | `EIO`          |
@@ -210,6 +262,12 @@ local f = assert(fs.open("notes.txt", "r"))
 print(f:read("l"))   -> "hello"
 print(f:read("a"))   -> "42\n"
 f:close()
+
+assert(fs.rename("notes.txt", "notes.old"))
+
+local s = assert(fs.stat("notes.old"))
+print(s.type, s.size)
+  -> file    6
 ```
 
 ```lua

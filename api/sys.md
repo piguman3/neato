@@ -4,7 +4,7 @@ Written by UsUsStudios
 
 Extension: `core`
 
-Version: 2
+Version: 3
 
 ---
 

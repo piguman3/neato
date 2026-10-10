@@ -74,27 +74,43 @@ keeps the names free until a specification is written and final.
 
 | Name         | Version | Requires | Specification                                                                                   | Contents                                                                                 |
 | ------------ | ------- | -------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `core`       | 2       |          | [api/](api/README.md), [common/paths.md](common/paths.md), [common/errors.md](common/errors.md) | Lua environment, `sys`, `event`, `term`, `fs`, `print`, `CWD`, paths, error codes        |
+| `core`       | 3       |          | [api/](api/README.md), [common/paths.md](common/paths.md), [common/errors.md](common/errors.md) | Lua environment, the program model (arguments and exit status), `sys`, `event`, `term`, `fs`, `print`, `CWD`, paths, error codes |
+| `ext.stdio`  | 1       | `core`   | [api/stdio.md](api/stdio.md)                                                                    | The standard input, output and error streams, line input, and what `print` writes to.    |
+| `ext.env`    | 1       | `core`   | [api/env.md](api/env.md)                                                                        | The environment variables of a program, and the `PATH` convention.                       |
+| `ext.time`   | 1       | `core`   | [api/time.md](api/time.md)                                                                      | A monotonic clock, a wall clock, and UTC calendar tables.                                |
+| `ext.proc`   | 1       | `core`, `ext.stdio`, `ext.env` | [api/proc.md](api/proc.md)                                                | Processes: starting, waiting for and stopping programs, and pipes.                       |
+| `ext.user`   | 1       | `core`   | [api/user.md](api/user.md)                                                                      | User accounts: identity, lookup, administrators.                                         |
+| `ext.system` | 1       | `core`   | [api/system.md](api/system.md)                                                                  | Hostname, machine type, uptime.                                                          |
+| `ext.perms`  | 1       | `core`   | [api/perms.md](api/perms.md)                                                                    | Unix-style permission bits and owners for the `fs` filesystem.                           |
 | `ext.screen` | 1       | `core`   | [api/screen.md](api/screen.md)                                                                  | NEET Computers `screen` API, possibly redirected to a window or layer.                   |
 | `ext.dpp`    | 2       | `core`   | [network/dpp.md](network/dpp.md)                                                                | Direct Payload Protocol.                                                                 |
 | `ext.spp`    | 2       | `core`   | [network/spp.md](network/spp.md)                                                                | Sequenced Payload Protocol: reliable local connections, pollable handles, peer identity. |
 
+An operating system that wants to run a Unix-style userland, a shell and the classic core utilities, reports `core`
+with `ext.stdio`, `ext.env`, `ext.time`, `ext.proc`, `ext.user`, `ext.system` and `ext.perms`. Together they are the
+smallest set the classic utilities are written from, and each of them stays optional on its own: an OS picks the
+ones it has, and reports them so programs can check.
+
 #### Drafts
 
 A draft extension has a specification, but it is not final yet. Its specification file carries a draft notice. An OS
-must not report a draft extension as supported until that notice is removed, so until then the name is reserved in the
-same way as the names below.
+must not report a draft extension as supported until that notice is removed, so until then the name is reserved in
+the same way as the names below.
 
 | Name            | Version | Requires  | Specification                                  | Contents                                                              |
 | --------------- | ------- | --------- | ---------------------------------------------- | --------------------------------------------------------------------- |
 | `ext.rpp`       | 1       | `core`    | [network/rpp.md](network/rpp.md)               | Routed Packet Protocol: host addresses and routing between computers. |
 | `ext.sppRemote` | 1       | `ext.spp` | [network/spp-remote.md](network/spp-remote.md) | SPP connections between computers (`scope = "network"`).              |
+| `ext.symlink`   | 1       | `core`    | [api/symlink.md](api/symlink.md)               | Symbolic links in the `fs` filesystem.                                |
+| `ext.statfs`    | 1       | `core`    | [api/statfs.md](api/statfs.md)                 | Size and free space of a filesystem.                                  |
 
 #### Reserved
 
-Reserved: `ext.headsup`, `ext.peripherals`, `ext.chip`, `ext.internet`, and `ext.partitions`. `ext.internet` is the name
-for the raw NEET Computers `internet` API (HTTP and WebSocket) and has nothing to do with the internet layer of NEATO
-Network, which is `ext.rpp`.
+Reserved: `ext.headsup`, `ext.peripherals`, `ext.chip`, `ext.internet`, `ext.partitions`, `ext.auth`,
+`ext.job`, `ext.fifo`, and `ext.utimes`. `ext.internet` is the
+name for the raw NEET Computers `internet` API (HTTP and WebSocket) and has nothing to do with the internet layer of
+NEATO Network, which is `ext.rpp`. `ext.auth` is for passwords and switching users, `ext.job` for process groups and
+job control, `ext.fifo` for named pipes, and `ext.utimes` for setting a file's times.
 
 Bootloaders are not part of an operating system's program environment, so they are not extensions. They are covered
 by their own specification in [boot/](boot/README.md), which carries its own version number.
