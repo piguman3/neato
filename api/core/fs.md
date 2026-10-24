@@ -24,22 +24,22 @@ the message is for humans and must not be compared. Functions that answer a ques
 [`fs.getPoint`](#filesystem-points), which answers `nil` for a point that is not provided, do not fail this way. A path
 that is not valid according to `paths.md`, or a value of the wrong type, raises an error instead.
 
-| Name             | Description                                                                                                                                           | Arguments                    | Returns                                            |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | -------------------------------------------------- |
-| fs.exists        | Returns whether a file or directory exists at the path.                                                                                               | path (string)                | boolean                                            |
-| fs.isFile        | Returns whether the path is a file.                                                                                                                   | path (string)                | boolean                                            |
-| fs.isDir         | Returns whether the path is a directory.                                                                                                              | path (string)                | boolean                                            |
-| fs.list          | Returns the names of everything inside a directory, in no particular order. Names do not include a path.                                              | path (string)                | names (table of strings), or nil, code and message |
-| fs.makeDir       | Creates a directory. The parent directory must already exist, and the path must not.                                                                  | path (string)                | true, or nil, code and message                     |
-| fs.delete        | Deletes a file or an empty directory. A partition root cannot be deleted.                                                                             | path (string)                | true, or nil, code and message                     |
-| fs.open          | Opens a file. See below.                                                                                                                              | path (string), mode (string) | handle (table), or nil, code and message           |
+| Name             | Description                                                                                                                                              | Arguments                    | Returns                                            |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | -------------------------------------------------- |
+| fs.exists        | Returns whether a file or directory exists at the path.                                                                                                  | path (string)                | boolean                                            |
+| fs.isFile        | Returns whether the path is a file.                                                                                                                      | path (string)                | boolean                                            |
+| fs.isDir         | Returns whether the path is a directory.                                                                                                                 | path (string)                | boolean                                            |
+| fs.list          | Returns the names of everything inside a directory, in no particular order. Names do not include a path.                                                 | path (string)                | names (table of strings), or nil, code and message |
+| fs.makeDir       | Creates a directory. The parent directory must already exist, and the path must not.                                                                     | path (string)                | true, or nil, code and message                     |
+| fs.delete        | Deletes a file or an empty directory. A partition root cannot be deleted.                                                                                | path (string)                | true, or nil, code and message                     |
+| fs.open          | Opens a file. See below.                                                                                                                                 | path (string), mode (string) | handle (table), or nil, code and message           |
 | fs.resolve       | Returns the full, normalized form of a path, without checking that it exists. See [paths.md](../../common/paths.md). The disk is always given as its ID. | path (string)                | full path (string), or nil, code and message       |
-| fs.rename        | Renames (moves) a file or directory. See [Renaming](#renaming).                                                                                       | old (string), new (string)   | true, or nil, code and message                     |
-| fs.stat          | Returns information about a file or directory. See [File information](#file-information).                                                             | path (string)                | info (table), or nil, code and message             |
-| fs.getDisks      | Returns the disks that are present, in ascending order of slot.                                                                                       | none                         | disks (table of `{slot = int, id = string}`)       |
-| fs.getPartitions | Returns the names of the partitions on a disk.                                                                                                        | disk (int or string)         | names (table of strings), or nil, code and message |
-| fs.getPoint      | Returns the path the operating system uses for a [filesystem point](#filesystem-points). A point the operating system does not provide returns `nil`. | point (string)               | path (string), or nil                              |
-| fs.getPoints     | Returns every filesystem point the operating system provides, as a table from the point's name to its path.                                           | none                         | points (table from str to str)                     |
+| fs.rename        | Renames (moves) a file or directory. See [Renaming](#renaming).                                                                                          | old (string), new (string)   | true, or nil, code and message                     |
+| fs.stat          | Returns information about a file or directory. See [File information](#file-information).                                                                | path (string)                | info (table), or nil, code and message             |
+| fs.getDisks      | Returns the disks that are present, in ascending order of slot.                                                                                          | none                         | disks (table of `{slot = int, id = string}`)       |
+| fs.getPartitions | Returns the names of the partitions on a disk.                                                                                                           | disk (int or string)         | names (table of strings), or nil, code and message |
+| fs.getPoint      | Returns the path the operating system uses for a [filesystem point](#filesystem-points). A point the operating system does not provide returns `nil`.    | point (string)               | path (string), or nil                              |
+| fs.getPoints     | Returns every filesystem point the operating system provides, as a table from the point's name to its path.                                              | none                         | points (table from str to str)                     |
 
 ---
 
@@ -75,11 +75,11 @@ Reading from a handle opened for writing, or writing to a handle opened with `"r
 `fs.stat(path)` returns a table describing the object at the path. The table is a snapshot; it never changes by
 itself afterwards.
 
-| Field  | Type            | Meaning                                                                                                        |
-| ------ | --------------- | -------------------------------------------------------------------------------------------------------------- |
-| `type` | string          | `"file"` or `"dir"`. `"other"` covers everything else (for example a device). `"link"` is used only by the [`ext.symlink`](symlink.md) extension. |
-| `size` | int, optional   | The size in bytes. `nil` when the object has no meaningful size (a directory, for example) or the operating system does not report one. |
-| `mtime` | int, optional  | The last modification time, in seconds on the [`ext.time`](time.md) wall clock. `nil` when the operating system does not track times. |
+| Field   | Type          | Meaning                                                                                                                                           |
+| ------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`  | string        | `"file"` or `"dir"`. `"other"` covers everything else (for example a device). `"link"` is used only by the [`ext.symlink`](symlink.md) extension. |
+| `size`  | int, optional | The size in bytes. `nil` when the object has no meaningful size (a directory, for example) or the operating system does not report one.           |
+| `mtime` | int, optional | The last modification time, in seconds on the [`ext.time`](time.md) wall clock. `nil` when the operating system does not track times.             |
 
 Fields that are not listed here may be present when an extension that defines them is reported (for example
 [`ext.perms`](../perms.md)). A program must ignore any field it does not know. A missing optional field and a field the
@@ -106,74 +106,74 @@ The code is the second result, after the `nil`. `fs.exists`, `fs.isFile` and `fs
 not fail; `fs.getDisks` and `fs.getPoints` always succeed; and `fs.getPoint` answers `nil` for a point that is not
 provided.
 
-| Function         | Condition                                          | Code           |
-| ---------------- | -------------------------------------------------- | -------------- |
-| fs.list          | the directory does not exist                       | `ENOENT`       |
-| fs.list          | the path is not a directory                        | `ENOTDIR`      |
-| fs.list          | the directory is not allowed to be read            | `EACCES`       |
-| fs.list          | the directory cannot be read                       | `EIO`          |
-| fs.makeDir       | the path already exists                            | `EEXIST`       |
-| fs.makeDir       | the parent directory does not exist                | `ENOENT`       |
-| fs.makeDir       | a component of the path is not a directory         | `ENOTDIR`      |
-| fs.makeDir       | the directory is not allowed to be created         | `EACCES`       |
-| fs.makeDir       | the filesystem is read-only                        | `EROFS`        |
-| fs.makeDir       | there is no space left                             | `ENOSPC`       |
-| fs.makeDir       | the name is too long                               | `ENAMETOOLONG` |
-| fs.makeDir       | the directory cannot be created for another reason | `EIO`          |
-| fs.delete        | nothing exists at the path                         | `ENOENT`       |
-| fs.delete        | the directory is not empty                         | `ENOTEMPTY`    |
-| fs.delete        | the path is a partition root                       | `EPERM`        |
-| fs.delete        | the path is not allowed to be deleted              | `EACCES`       |
-| fs.delete        | the filesystem is read-only                        | `EROFS`        |
-| fs.delete        | the path is in use                                 | `EBUSY`        |
-| fs.delete        | the path cannot be deleted for another reason      | `EIO`          |
-| fs.open          | the file does not exist and the mode is `"r"`      | `ENOENT`       |
-| fs.open          | the path is a directory                            | `EISDIR`       |
-| fs.open          | a component of the path is not a directory         | `ENOTDIR`      |
-| fs.open          | the mode is not a valid mode                       | `EINVAL`       |
-| fs.open          | the file is not allowed to be opened               | `EACCES`       |
-| fs.open          | the filesystem is read-only and the mode writes    | `EROFS`        |
-| fs.open          | there is no space left and the mode writes         | `ENOSPC`       |
-| fs.open          | the file is too large                              | `EFBIG`        |
-| fs.open          | the name is too long                               | `ENAMETOOLONG` |
-| fs.open          | the file cannot be opened for another reason       | `EIO`          |
-| fs.resolve       | the disk cannot be identified                      | `ENODEV`       |
-| fs.resolve       | the path is too long                               | `ENAMETOOLONG` |
-| fs.stat          | nothing exists at the path                         | `ENOENT`       |
-| fs.stat          | a component of the path is not a directory         | `ENOTDIR`      |
-| fs.stat          | the file is not allowed to be examined             | `EACCES`       |
-| fs.stat          | the name is too long                               | `ENAMETOOLONG` |
-| fs.stat          | the file cannot be examined for another reason     | `EIO`          |
-| fs.rename        | the old path, or a parent of the new one, does not exist | `ENOENT` |
-| fs.rename        | a component of a path is not a directory           | `ENOTDIR`      |
-| fs.rename        | the target is a directory and the source is not, or the other way around | `ENOTDIR` |
-| fs.rename        | the target directory exists and is not empty       | `ENOTEMPTY`    |
-| fs.rename        | a directory is moved into itself or below itself   | `EINVAL`       |
-| fs.rename        | the old and new paths are on different partitions  | `EXDEV`        |
-| fs.rename        | the path is a partition root                       | `EPERM`        |
-| fs.rename        | the rename is not allowed                          | `EACCES`       |
-| fs.rename        | a filesystem is read-only                          | `EROFS`        |
-| fs.rename        | the object is in use                               | `EBUSY`        |
-| fs.rename        | a name is too long                                 | `ENAMETOOLONG` |
-| fs.rename        | the file cannot be renamed for another reason      | `EIO`          |
-| fs.getPartitions | the disk does not exist                            | `ENODEV`       |
-| fs.getPartitions | the disk argument is not a valid slot or ID        | `EINVAL`       |
-| fs.getPartitions | the partitions cannot be read                      | `EIO`          |
-| handle:read      | the format is not `"l"`, `"a"` or a number         | `EINVAL`       |
-| handle:read      | the handle was opened for writing                  | `EBADF`        |
-| handle:read      | the file cannot be read                            | `EIO`          |
-| handle:write     | the handle was opened for reading                  | `EBADF`        |
-| handle:write     | there is no space left                             | `ENOSPC`       |
-| handle:write     | the file is too large                              | `EFBIG`        |
-| handle:write     | the filesystem is read-only                        | `EROFS`        |
-| handle:write     | the data cannot be written for another reason      | `EIO`          |
-| handle:seek      | the whence is not `"set"`, `"cur"` or `"end"`      | `EINVAL`       |
-| handle:seek      | the position is out of range                       | `ERANGE`       |
-| handle:seek      | the position cannot be reached                     | `EIO`          |
-| handle:flush     | there is no space left                             | `ENOSPC`       |
-| handle:flush     | the filesystem is read-only                        | `EROFS`        |
-| handle:flush     | the data cannot be stored                          | `EIO`          |
-| handle:close     | the handle cannot be closed cleanly                | `EIO`          |
+| Function         | Condition                                                                | Code           |
+| ---------------- | ------------------------------------------------------------------------ | -------------- |
+| fs.list          | the directory does not exist                                             | `ENOENT`       |
+| fs.list          | the path is not a directory                                              | `ENOTDIR`      |
+| fs.list          | the directory is not allowed to be read                                  | `EACCES`       |
+| fs.list          | the directory cannot be read                                             | `EIO`          |
+| fs.makeDir       | the path already exists                                                  | `EEXIST`       |
+| fs.makeDir       | the parent directory does not exist                                      | `ENOENT`       |
+| fs.makeDir       | a component of the path is not a directory                               | `ENOTDIR`      |
+| fs.makeDir       | the directory is not allowed to be created                               | `EACCES`       |
+| fs.makeDir       | the filesystem is read-only                                              | `EROFS`        |
+| fs.makeDir       | there is no space left                                                   | `ENOSPC`       |
+| fs.makeDir       | the name is too long                                                     | `ENAMETOOLONG` |
+| fs.makeDir       | the directory cannot be created for another reason                       | `EIO`          |
+| fs.delete        | nothing exists at the path                                               | `ENOENT`       |
+| fs.delete        | the directory is not empty                                               | `ENOTEMPTY`    |
+| fs.delete        | the path is a partition root                                             | `EPERM`        |
+| fs.delete        | the path is not allowed to be deleted                                    | `EACCES`       |
+| fs.delete        | the filesystem is read-only                                              | `EROFS`        |
+| fs.delete        | the path is in use                                                       | `EBUSY`        |
+| fs.delete        | the path cannot be deleted for another reason                            | `EIO`          |
+| fs.open          | the file does not exist and the mode is `"r"`                            | `ENOENT`       |
+| fs.open          | the path is a directory                                                  | `EISDIR`       |
+| fs.open          | a component of the path is not a directory                               | `ENOTDIR`      |
+| fs.open          | the mode is not a valid mode                                             | `EINVAL`       |
+| fs.open          | the file is not allowed to be opened                                     | `EACCES`       |
+| fs.open          | the filesystem is read-only and the mode writes                          | `EROFS`        |
+| fs.open          | there is no space left and the mode writes                               | `ENOSPC`       |
+| fs.open          | the file is too large                                                    | `EFBIG`        |
+| fs.open          | the name is too long                                                     | `ENAMETOOLONG` |
+| fs.open          | the file cannot be opened for another reason                             | `EIO`          |
+| fs.resolve       | the disk cannot be identified                                            | `ENODEV`       |
+| fs.resolve       | the path is too long                                                     | `ENAMETOOLONG` |
+| fs.stat          | nothing exists at the path                                               | `ENOENT`       |
+| fs.stat          | a component of the path is not a directory                               | `ENOTDIR`      |
+| fs.stat          | the file is not allowed to be examined                                   | `EACCES`       |
+| fs.stat          | the name is too long                                                     | `ENAMETOOLONG` |
+| fs.stat          | the file cannot be examined for another reason                           | `EIO`          |
+| fs.rename        | the old path, or a parent of the new one, does not exist                 | `ENOENT`       |
+| fs.rename        | a component of a path is not a directory                                 | `ENOTDIR`      |
+| fs.rename        | the target is a directory and the source is not, or the other way around | `ENOTDIR`      |
+| fs.rename        | the target directory exists and is not empty                             | `ENOTEMPTY`    |
+| fs.rename        | a directory is moved into itself or below itself                         | `EINVAL`       |
+| fs.rename        | the old and new paths are on different partitions                        | `EXDEV`        |
+| fs.rename        | the path is a partition root                                             | `EPERM`        |
+| fs.rename        | the rename is not allowed                                                | `EACCES`       |
+| fs.rename        | a filesystem is read-only                                                | `EROFS`        |
+| fs.rename        | the object is in use                                                     | `EBUSY`        |
+| fs.rename        | a name is too long                                                       | `ENAMETOOLONG` |
+| fs.rename        | the file cannot be renamed for another reason                            | `EIO`          |
+| fs.getPartitions | the disk does not exist                                                  | `ENODEV`       |
+| fs.getPartitions | the disk argument is not a valid slot or ID                              | `EINVAL`       |
+| fs.getPartitions | the partitions cannot be read                                            | `EIO`          |
+| handle:read      | the format is not `"l"`, `"a"` or a number                               | `EINVAL`       |
+| handle:read      | the handle was opened for writing                                        | `EBADF`        |
+| handle:read      | the file cannot be read                                                  | `EIO`          |
+| handle:write     | the handle was opened for reading                                        | `EBADF`        |
+| handle:write     | there is no space left                                                   | `ENOSPC`       |
+| handle:write     | the file is too large                                                    | `EFBIG`        |
+| handle:write     | the filesystem is read-only                                              | `EROFS`        |
+| handle:write     | the data cannot be written for another reason                            | `EIO`          |
+| handle:seek      | the whence is not `"set"`, `"cur"` or `"end"`                            | `EINVAL`       |
+| handle:seek      | the position is out of range                                             | `ERANGE`       |
+| handle:seek      | the position cannot be reached                                           | `EIO`          |
+| handle:flush     | there is no space left                                                   | `ENOSPC`       |
+| handle:flush     | the filesystem is read-only                                              | `EROFS`        |
+| handle:flush     | the data cannot be stored                                                | `EIO`          |
+| handle:close     | the handle cannot be closed cleanly                                      | `EIO`          |
 
 ---
 

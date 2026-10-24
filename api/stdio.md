@@ -18,13 +18,13 @@ The streams are handles with the same five methods, called with `:`, as the hand
 returns, and they follow the same rules: a wrong argument type raises an error, calling a method on a closed stream
 raises an error, and a refusal returns `nil`, then a code from [errors.md](../common/errors.md), then a message.
 
-| Name          | Description                                                                                                                                             | Arguments        | Returns                  |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------------------ |
-| stdio.stdin   | The standard input, open for reading only.                                                                                                              |                  | handle (table)           |
-| stdio.stdout  | The standard output, open for writing only.                                                                                                             |                  | handle (table)           |
-| stdio.stderr  | The standard error, open for writing only. Meant for diagnostics; a program's result belongs on standard output.                                        |                  | handle (table)           |
-| stdio.isatty  | Returns whether the stream is connected to a terminal.                                                                                                  | stream (handle)  | boolean                  |
-| stdio.readLine| Reads one line of input, with editing and echo when the input is a terminal. See [Reading a line](#reading-a-line).                                      | options (table?) | line (string), or nil, or nil, code and message |
+| Name           | Description                                                                                                         | Arguments        | Returns                                         |
+| -------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------- | ----------------------------------------------- |
+| stdio.stdin    | The standard input, open for reading only.                                                                          |                  | handle (table)                                  |
+| stdio.stdout   | The standard output, open for writing only.                                                                         |                  | handle (table)                                  |
+| stdio.stderr   | The standard error, open for writing only. Meant for diagnostics; a program's result belongs on standard output.    |                  | handle (table)                                  |
+| stdio.isatty   | Returns whether the stream is connected to a terminal.                                                              | stream (handle)  | boolean                                         |
+| stdio.readLine | Reads one line of input, with editing and echo when the input is a terminal. See [Reading a line](#reading-a-line). | options (table?) | line (string), or nil, or nil, code and message |
 
 All three streams always exist. A program that is started without anywhere obvious to put them, such as one started
 from a graphical launcher, still gets them: the operating system may connect them to a log, a console window it
@@ -83,9 +83,9 @@ When the input is a terminal, the operating system lets the user edit the line w
 typing characters inserts them, backspace erases, and the typed text is drawn as it goes (echoed). The accepted
 line is what the user finished with the key that ends a line.
 
-| Option    | Type            | Meaning                                                                                              |
-| --------- | --------------- | ---------------------------------------------------------------------------------------------------- |
-| `noecho`  | boolean         | Do not draw what the user types, for reading a password. The line is finished the same way.           |
+| Option    | Type            | Meaning                                                                                                                                     |
+| --------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `noecho`  | boolean         | Do not draw what the user types, for reading a password. The line is finished the same way.                                                 |
 | `history` | table of string | Previous lines. The accepted line is appended to this table, and keys that recall entries, such as the up and down arrows, move through it. |
 
 `stdio.readLine` returns the line (a string), or `nil` at end of file. While the user is typing, other events stay
@@ -102,19 +102,19 @@ Passing anything other than a table, or an option of the wrong type, raises an e
 
 ### Failure codes
 
-| Function       | Condition                                                        | Code     |
-| -------------- | ---------------------------------------------------------------- | -------- |
-| handle:read    | the handle was opened for writing                                | `EBADF`  |
-| handle:read    | the input cannot be read                                         | `EIO`    |
-| handle:write   | the handle was opened for reading                                | `EBADF`  |
-| handle:write   | the other end of a pipe or terminal is gone                      | `EPIPE`  |
-| handle:write   | there is no space left                                           | `ENOSPC` |
-| handle:write   | the data cannot be written for another reason                    | `EIO`    |
-| handle:seek    | the stream cannot seek                                           | `ESPIPE` |
-| handle:seek    | the position is out of range                                     | `ERANGE` |
-| handle:flush   | the data cannot be written                                       | `EIO`    |
-| stdio.readLine | the terminate event arrived while the user was typing            | `EINTR`  |
-| stdio.readLine | the input cannot be read                                         | `EIO`    |
+| Function       | Condition                                             | Code     |
+| -------------- | ----------------------------------------------------- | -------- |
+| handle:read    | the handle was opened for writing                     | `EBADF`  |
+| handle:read    | the input cannot be read                              | `EIO`    |
+| handle:write   | the handle was opened for reading                     | `EBADF`  |
+| handle:write   | the other end of a pipe or terminal is gone           | `EPIPE`  |
+| handle:write   | there is no space left                                | `ENOSPC` |
+| handle:write   | the data cannot be written for another reason         | `EIO`    |
+| handle:seek    | the stream cannot seek                                | `ESPIPE` |
+| handle:seek    | the position is out of range                          | `ERANGE` |
+| handle:flush   | the data cannot be written                            | `EIO`    |
+| stdio.readLine | the terminate event arrived while the user was typing | `EINTR`  |
+| stdio.readLine | the input cannot be read                              | `EIO`    |
 
 ---
 

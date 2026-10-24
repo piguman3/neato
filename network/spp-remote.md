@@ -45,14 +45,14 @@ Both carry a frame, a short list of primitive values, and nothing else. [wire.md
 survive the trip: strings must only contain bytes from `0x01` to `0x7F`, integers must fit in 32 bits, a frame has at most 16
 values, and tables are not possible at all.
 
-`io.broadcastLocal(...)` hands the values to every network receiver that is on the same *network cable*
+`io.broadcastLocal(...)` hands the values to every network receiver that is on the same _network cable_
 graph as the sending computer. The sender itself is not among the receivers. The set of receivers is refreshed about
 once a second, so a computer that was just connected or disconnected can be missed or still receive for a moment. The
 receiver sees the raw event `networkMessage` with exactly the values that were sent. A computer that is switched off
 receives nothing, and the message is gone.
 
 The Access Point peripheral (`neetcomputers:access_point`, attached to a computer by a peripheral
-cable) has a function `broadcast(...)` with the same restriction on its arguments. The message goes to every *other*
+cable) has a function `broadcast(...)` with the same restriction on its arguments. The message goes to every _other_
 access point that is in the same dimension and within `range` blocks of the sender. Only the sender's range matters.
 The default and the largest range is 500, and `setRange` can lower it. A receiving access point puts a raw event named
 after its peripheral type onto the event queue of every computer attached to it, with the values

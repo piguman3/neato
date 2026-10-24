@@ -18,10 +18,10 @@ package present its files under several points.
 This extension adds two functions to the `fs` API. An operating system defines them exactly when it reports this
 extension, as [fs.md](core/fs.md) describes.
 
-| Name       | Description                                                                       | Arguments                          | Returns                                    |
-| ---------- | --------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------ |
-| fs.symlink | Creates a link at a path, naming a target path.                                    | target (string), linkPath (string) | true, or nil, code and message             |
-| fs.readlink| Returns the target path a link names.                                              | path (string)                      | target (string), or nil, code and message  |
+| Name        | Description                                     | Arguments                          | Returns                                   |
+| ----------- | ----------------------------------------------- | ---------------------------------- | ----------------------------------------- |
+| fs.symlink  | Creates a link at a path, naming a target path. | target (string), linkPath (string) | true, or nil, code and message            |
+| fs.readlink | Returns the target path a link names.           | path (string)                      | target (string), or nil, code and message |
 
 `fs.symlink(target, linkPath)` creates a link at `linkPath` that holds `target`, a path in the
 [paths](../common/paths.md) format exactly as given. The target is checked for being a valid path, and for nothing
@@ -46,19 +46,19 @@ simply never name links.
 
 ### Failure codes
 
-| Function    | Condition                                               | Code           |
-| ----------- | ------------------------------------------------------- | -------------- |
-| fs.symlink  | something already exists at the link path               | `EEXIST`       |
-| fs.symlink  | a component of a path is not a directory                | `ENOTDIR`      |
-| fs.symlink  | a parent of the link path does not exist                | `ENOENT`       |
-| fs.symlink  | the link is not allowed to be created                   | `EACCES`       |
-| fs.symlink  | the filesystem is read-only                             | `EROFS`        |
-| fs.symlink  | the name is too long                                    | `ENAMETOOLONG` |
-| fs.symlink  | the link cannot be created for another reason           | `EIO`          |
-| fs.readlink | nothing exists at the path                              | `ENOENT`       |
-| fs.readlink | the path is not a link                                  | `EINVAL`       |
-| fs.readlink | the link is not allowed to be read                      | `EACCES`       |
-| fs.readlink | the target cannot be read for another reason            | `EIO`          |
+| Function    | Condition                                     | Code           |
+| ----------- | --------------------------------------------- | -------------- |
+| fs.symlink  | something already exists at the link path     | `EEXIST`       |
+| fs.symlink  | a component of a path is not a directory      | `ENOTDIR`      |
+| fs.symlink  | a parent of the link path does not exist      | `ENOENT`       |
+| fs.symlink  | the link is not allowed to be created         | `EACCES`       |
+| fs.symlink  | the filesystem is read-only                   | `EROFS`        |
+| fs.symlink  | the name is too long                          | `ENAMETOOLONG` |
+| fs.symlink  | the link cannot be created for another reason | `EIO`          |
+| fs.readlink | nothing exists at the path                    | `ENOENT`       |
+| fs.readlink | the path is not a link                        | `EINVAL`       |
+| fs.readlink | the link is not allowed to be read            | `EACCES`       |
+| fs.readlink | the target cannot be read for another reason  | `EIO`          |
 
 ---
 

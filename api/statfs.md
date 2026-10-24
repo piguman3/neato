@@ -17,16 +17,16 @@ written from.
 This extension adds one function to the `fs` API. An operating system defines it exactly when it reports this
 extension, as [fs.md](core/fs.md) describes.
 
-| Name      | Description                                                     | Arguments       | Returns                                     |
-| --------- | --------------------------------------------------------------- | --------------- | ------------------------------------------- |
-| fs.statfs | Returns the size and free space of the filesystem holding a path. | path (string)  | info (table), or nil, code and message      |
+| Name      | Description                                                       | Arguments     | Returns                                |
+| --------- | ----------------------------------------------------------------- | ------------- | -------------------------------------- |
+| fs.statfs | Returns the size and free space of the filesystem holding a path. | path (string) | info (table), or nil, code and message |
 
 The table has two fields, both in bytes:
 
-| Field   | Type           | Meaning                                                                          |
-| ------- | -------------- | -------------------------------------------------------------------------------- |
-| `total` | int, optional  | How much storage the filesystem holds in total.                                   |
-| `free`  | int, optional  | How much of it may still be written by this program.                              |
+| Field   | Type          | Meaning                                              |
+| ------- | ------------- | ---------------------------------------------------- |
+| `total` | int, optional | How much storage the filesystem holds in total.      |
+| `free`  | int, optional | How much of it may still be written by this program. |
 
 Either field may be `nil` when the filesystem does not report it, so a filesystem with a fixed size but no free
 space accounting, or the other way around, still fits this specification. The space used is `total - free` when
@@ -40,12 +40,12 @@ path on another partition gets that partition's.
 
 ### Failure codes
 
-| Function   | Condition                                        | Code     |
-| ---------- | ------------------------------------------------ | -------- |
-| fs.statfs  | nothing exists at the path                       | `ENOENT` |
-| fs.statfs  | a component of the path is not a directory       | `ENOTDIR`|
-| fs.statfs  | the path is not allowed to be examined           | `EACCES` |
-| fs.statfs  | the filesystem cannot be examined for another reason | `EIO` |
+| Function  | Condition                                            | Code      |
+| --------- | ---------------------------------------------------- | --------- |
+| fs.statfs | nothing exists at the path                           | `ENOENT`  |
+| fs.statfs | a component of the path is not a directory           | `ENOTDIR` |
+| fs.statfs | the path is not allowed to be examined               | `EACCES`  |
+| fs.statfs | the filesystem cannot be examined for another reason | `EIO`     |
 
 ---
 

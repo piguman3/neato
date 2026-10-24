@@ -16,11 +16,11 @@ concern for the program, not something the clocks know about.
 The two clocks are independent. The monotonic clock never goes backwards and never jumps; the wall clock may be
 adjusted, and on a computer without a battery or a network time source it may not be set at all.
 
-| Name           | Description                                                                                                                              | Arguments       | Returns                                          |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ------------------------------------------------ |
-| time.monotonic | Returns seconds on a clock that only moves forward, from an arbitrary origin such as the start of the operating system.                    | none            | seconds (number)                                 |
-| time.wall      | Returns the current wall clock time as seconds since `1970-01-01T00:00:00Z`, or `nil` on a computer with no wall clock.                    | none            | seconds (int), or nil                            |
-| time.date      | Splits a wall clock time into a calendar table. See below.                                                                                | secs (int?)     | date (table), or nil                             |
+| Name           | Description                                                                                                             | Arguments   | Returns               |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------- | --------------------- |
+| time.monotonic | Returns seconds on a clock that only moves forward, from an arbitrary origin such as the start of the operating system. | none        | seconds (number)      |
+| time.wall      | Returns the current wall clock time as seconds since `1970-01-01T00:00:00Z`, or `nil` on a computer with no wall clock. | none        | seconds (int), or nil |
+| time.date      | Splits a wall clock time into a calendar table. See below.                                                              | secs (int?) | date (table), or nil  |
 
 `time.monotonic` keeps whatever precision the computer has and should be precise enough to measure intervals well
 under a second. Its origin is arbitrary: a program must compare it only with other `time.monotonic` results, never
@@ -31,16 +31,16 @@ answer, not a failure.
 
 `time.date` splits a wall clock time into a table of integers:
 
-| Field   | Range            | Meaning                                   |
-| ------- | ---------------- | ----------------------------------------- |
-| `year`  |                  | The year, such as `2026`.                  |
-| `month` | 1 to 12          | The month.                                 |
-| `day`   | 1 to 31          | The day of the month.                      |
-| `hour`  | 0 to 23          | The hour.                                  |
-| `min`   | 0 to 59          | The minute.                                |
-| `sec`   | 0 to 59          | The second.                                |
-| `wday`  | 0 to 6           | The day of the week, with 0 for Sunday.    |
-| `yday`  | 1 to 366         | The day of the year.                       |
+| Field   | Range    | Meaning                                 |
+| ------- | -------- | --------------------------------------- |
+| `year`  |          | The year, such as `2026`.               |
+| `month` | 1 to 12  | The month.                              |
+| `day`   | 1 to 31  | The day of the month.                   |
+| `hour`  | 0 to 23  | The hour.                               |
+| `min`   | 0 to 59  | The minute.                             |
+| `sec`   | 0 to 59  | The second.                             |
+| `wday`  | 0 to 6   | The day of the week, with 0 for Sunday. |
+| `yday`  | 1 to 366 | The day of the year.                    |
 
 When `secs` is not given, `time.date` uses the current `time.wall`. When the computer has no wall clock,
 `time.date` returns `nil`. Passing a value that is not an integer raises an error.

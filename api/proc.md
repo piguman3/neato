@@ -17,16 +17,16 @@ Every program that this API starts is an ordinary NEATO program: a Lua chunk lau
 [globals.md](globals.md#the-program) describes, with the program model of `core`, the streams of
 [`ext.stdio`](stdio.md) and the environment of [`ext.env`](env.md). There is no second kind of program.
 
-| Name        | Description                                                                                    | Arguments                                             | Returns                                                    |
-| ----------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------------- |
-| proc.getpid | Returns this program's process id.                                                             | none                                                  | pid (int)                                                  |
-| proc.getppid| Returns the process id of the program that started this one, or 0 once that program has finished.| none                                                 | pid (int)                                                  |
-| proc.exit   | Ends this program immediately with the given exit status. Does not return.                      | status (int?)                                         |                                                            |
-| proc.spawn  | Starts a program. See [Starting a program](#starting-a-program).                                | path (string), args (table?), opts (table?)           | pid (int), or nil, code and message                        |
-| proc.pipe   | Creates a pipe: two connected ends, what is written to one can be read from the other.          | none                                                  | readEnd (handle), writeEnd (handle)                        |
-| proc.wait   | Waits until a child of this program finishes, and returns its exit status.                      | pid (int?)                                            | pid (int), status (int), or nil, code and message          |
-| proc.poll   | Like proc.wait, but returns `nil` immediately when nothing has finished.                         | pid (int?)                                            | pid (int), status (int), or nil, or nil, code and message  |
-| proc.kill   | Asks another program to stop, or stops it. See [Stopping a program](#stopping-a-program).        | pid (int), how (string?)                              | true, or nil, code and message                             |
+| Name         | Description                                                                                       | Arguments                                   | Returns                                                   |
+| ------------ | ------------------------------------------------------------------------------------------------- | ------------------------------------------- | --------------------------------------------------------- |
+| proc.getpid  | Returns this program's process id.                                                                | none                                        | pid (int)                                                 |
+| proc.getppid | Returns the process id of the program that started this one, or 0 once that program has finished. | none                                        | pid (int)                                                 |
+| proc.exit    | Ends this program immediately with the given exit status. Does not return.                        | status (int?)                               |                                                           |
+| proc.spawn   | Starts a program. See [Starting a program](#starting-a-program).                                  | path (string), args (table?), opts (table?) | pid (int), or nil, code and message                       |
+| proc.pipe    | Creates a pipe: two connected ends, what is written to one can be read from the other.            | none                                        | readEnd (handle), writeEnd (handle)                       |
+| proc.wait    | Waits until a child of this program finishes, and returns its exit status.                        | pid (int?)                                  | pid (int), status (int), or nil, code and message         |
+| proc.poll    | Like proc.wait, but returns `nil` immediately when nothing has finished.                          | pid (int?)                                  | pid (int), status (int), or nil, or nil, code and message |
+| proc.kill    | Asks another program to stop, or stops it. See [Stopping a program](#stopping-a-program).         | pid (int), how (string?)                    | true, or nil, code and message                            |
 
 A process id, or pid, is an integer that identifies one running program. The operating system chooses pids and may
 reuse the pid of a program that has finished and been waited for. A program that has finished keeps its pid, as a
@@ -51,13 +51,13 @@ anything else raises an error. An argument list that is too long for the operati
 `opts` is `nil` or a table with any of the following fields. Anything the operating system does not recognize is
 ignored; an operating system may accept additional fields of its own under names beginning with `x.`.
 
-| Field     | Type            | Meaning                                                                                                                        |
-| --------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `cwd`     | string          | The child's [`CWD`](core/cwd.md). It must be an existing directory when the child starts. The default is this program's `CWD`.        |
-| `env`     | table           | The child's environment, from name to value. It replaces the inherited one entirely. The default is a copy of this program's environment. |
-| `stdin`   | handle          | The child's standard input. Must be open for reading. The default is this program's standard input.                             |
-| `stdout`  | handle          | The child's standard output. Must be open for writing. The default is this program's standard output.                           |
-| `stderr`  | handle          | The child's standard error. Must be open for writing. The default is this program's standard error.                             |
+| Field    | Type   | Meaning                                                                                                                                   |
+| -------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `cwd`    | string | The child's [`CWD`](core/cwd.md). It must be an existing directory when the child starts. The default is this program's `CWD`.            |
+| `env`    | table  | The child's environment, from name to value. It replaces the inherited one entirely. The default is a copy of this program's environment. |
+| `stdin`  | handle | The child's standard input. Must be open for reading. The default is this program's standard input.                                       |
+| `stdout` | handle | The child's standard output. Must be open for writing. The default is this program's standard output.                                     |
+| `stderr` | handle | The child's standard error. Must be open for writing. The default is this program's standard error.                                       |
 
 The environment and option tables are copied the moment `proc.spawn` is called; changing them afterwards does
 nothing to the child.
@@ -113,10 +113,10 @@ system.
 
 `proc.kill(pid, how)` asks the program with that pid to stop.
 
-| `how`       | Meaning                                                                                                                                              |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `"term"`    | The default. Asks politely: the target receives the `terminate` event, exactly as if the user had asked it to stop, and is expected to exit. If it keeps running for too long, an operating system may then end it. |
-| `"kill"`    | Ends the target now. It receives no event and cannot clean up.                                                                                          |
+| `how`    | Meaning                                                                                                                                                                                                             |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `"term"` | The default. Asks politely: the target receives the `terminate` event, exactly as if the user had asked it to stop, and is expected to exit. If it keeps running for too long, an operating system may then end it. |
+| `"kill"` | Ends the target now. It receives no event and cannot clean up.                                                                                                                                                      |
 
 A program stopped this way, without exiting on its own, reports a nonzero status of at least 128, chosen by the
 operating system. A program may stop itself: `"kill"` on its own pid ends it, and `"term"` on its own pid is the
@@ -130,22 +130,22 @@ typically a matter of being an administrator (see [`ext.user`](user.md)); anythi
 
 ### Failure codes
 
-| Function   | Condition                                                   | Code           |
-| ---------- | ----------------------------------------------------------- | -------------- |
-| proc.spawn | the program file does not exist                             | `ENOENT`       |
-| proc.spawn | the path is a directory                                     | `EISDIR`       |
-| proc.spawn | a component of the path is not a directory                  | `ENOTDIR`      |
-| proc.spawn | the program file is not allowed to be run                   | `EACCES`       |
-| proc.spawn | the file is not a program this operating system can run     | `ENOEXEC`      |
-| proc.spawn | the `cwd` does not exist, or the given stream is open the wrong way | `EINVAL` |
-| proc.spawn | the argument list is too long, or a process limit is reached | `ELIMIT`      |
-| proc.spawn | the name is too long                                        | `ENAMETOOLONG` |
-| proc.spawn | the program cannot be started for another reason            | `EIO`          |
-| proc.pipe  | the operating system is out of pipes                        | `ELIMIT`       |
-| proc.wait  | the pid is not a child of this program, or was already reaped | `ECHILD`     |
-| proc.poll  | the pid is not a child of this program, or was already reaped | `ECHILD`     |
-| proc.kill  | no program has that pid                                     | `ESRCH`        |
-| proc.kill  | this program may not stop that one                          | `EACCES`       |
+| Function   | Condition                                                           | Code           |
+| ---------- | ------------------------------------------------------------------- | -------------- |
+| proc.spawn | the program file does not exist                                     | `ENOENT`       |
+| proc.spawn | the path is a directory                                             | `EISDIR`       |
+| proc.spawn | a component of the path is not a directory                          | `ENOTDIR`      |
+| proc.spawn | the program file is not allowed to be run                           | `EACCES`       |
+| proc.spawn | the file is not a program this operating system can run             | `ENOEXEC`      |
+| proc.spawn | the `cwd` does not exist, or the given stream is open the wrong way | `EINVAL`       |
+| proc.spawn | the argument list is too long, or a process limit is reached        | `ELIMIT`       |
+| proc.spawn | the name is too long                                                | `ENAMETOOLONG` |
+| proc.spawn | the program cannot be started for another reason                    | `EIO`          |
+| proc.pipe  | the operating system is out of pipes                                | `ELIMIT`       |
+| proc.wait  | the pid is not a child of this program, or was already reaped       | `ECHILD`       |
+| proc.poll  | the pid is not a child of this program, or was already reaped       | `ECHILD`       |
+| proc.kill  | no program has that pid                                             | `ESRCH`        |
+| proc.kill  | this program may not stop that one                                  | `EACCES`       |
 
 ---
 

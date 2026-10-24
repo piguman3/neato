@@ -20,7 +20,7 @@ or wirelessly connected to.
 
 The two media that NEET Computers has are a wired one (`io.broadcastLocal`, which reaches every computer on the same
 network cable graph) and a wireless one (the Access Point peripheral, which reaches every other Access Point in range).
-Both send to *everybody* in reach, lose messages when a receiver's queue is full, and never say who sent a message.
+Both send to _everybody_ in reach, lose messages when a receiver's queue is full, and never say who sent a message.
 There is no separate link layer protocol. [rpp.md](rpp.md#interfaces) describes how the media are used.
 
 - [Wire format (wire.md)](wire.md) - What a frame can contain on either medium (which values survive the trip, and the

@@ -17,11 +17,11 @@ A program starts with a copy of the environment of the program that started it (
 [`ext.proc`](proc.md#starting-a-program) for the one exception). Changing the environment changes only this
 program's own copy, never the parent's.
 
-| Name   | Description                                                                                    | Arguments                        | Returns                                   |
-| ------ | ---------------------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------- |
-| env.get| Returns the value of a variable, or `nil` if there is none.                                     | name (string)                    | value (string), or nil                    |
-| env.set| Creates a variable, changes its value, or removes it when the value is `nil`.                   | name (string), value (string?)   | true, or nil, code and message            |
-| env.all| Returns a new table with every variable, from name to value. Changing it does nothing.          | none                             | variables (table from str to str)         |
+| Name    | Description                                                                            | Arguments                      | Returns                           |
+| ------- | -------------------------------------------------------------------------------------- | ------------------------------ | --------------------------------- |
+| env.get | Returns the value of a variable, or `nil` if there is none.                            | name (string)                  | value (string), or nil            |
+| env.set | Creates a variable, changes its value, or removes it when the value is `nil`.          | name (string), value (string?) | true, or nil, code and message    |
+| env.all | Returns a new table with every variable, from name to value. Changing it does nothing. | none                           | variables (table from str to str) |
 
 A name is any non-empty string that does not contain `=`; a value is any string, including the empty one. The
 convention is names of uppercase letters, digits and underscores. A name that breaks these rules, or a value that is
@@ -49,11 +49,10 @@ and end in `/`. [`ext.proc`](proc.md) uses this exact convention when it resolve
 
 ### Failure codes
 
-| Function | Condition                                    | Code     |
-| -------- | -------------------------------------------- | -------- |
-| env.set  | the name is empty or contains `=`            | `EINVAL` |
-| env.set  | the value is not a string                    | `EINVAL` |
-| env.set  | the operating system will not store it       | `ELIMIT` |
+| Function | Condition                              | Code     |
+| -------- | -------------------------------------- | -------- |
+| env.set  | the name is empty or contains `=`      | `EINVAL` |
+| env.set  | the operating system will not store it | `ELIMIT` |
 
 ---
 

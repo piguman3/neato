@@ -58,16 +58,16 @@ Two addresses have a special meaning:
   without knowing who is there.
 
 - Choosing an address. A host generates its address once, from `crypto.SecureRNG`, rejecting the two special values,
-and stores it where the OS stores its settings, so that the address stays the same after a restart. The address is
-random, because NEATO gives a computer no identity of its own to derive one from. With 48 random bits, two hosts out of
-1000 have the same address with a probability of about 2 in a million.
+  and stores it where the OS stores its settings, so that the address stays the same after a restart. The address is
+  random, because NEATO gives a computer no identity of its own to derive one from. With 48 random bits, two hosts out of
+  1000 have the same address with a probability of about 2 in a million.
 
 - Duplicate addresses. Copying a disk to another computer copies the address too, so duplicates have to be detected. A
-medium never delivers a frame back to the computer that sent it. So if a host receives a `hello` (see below) whose
-source is *its own address*, another host has that address. `hello` is never passed on, so this cannot be the host's own
-packet coming back around a loop. The host then waits a random 0 to 5 seconds, chooses a new address, stores it, and
-sends a `hello` at once. Connections that were using the old address will not survive it. Both hosts see the other's
-`hello` and both change address, which is what makes this work without anyone being in charge.
+  medium never delivers a frame back to the computer that sent it. So if a host receives a `hello` (see below) whose
+  source is _its own address_, another host has that address. `hello` is never passed on, so this cannot be the host's own
+  packet coming back around a loop. The host then waits a random 0 to 5 seconds, chooses a new address, stores it, and
+  sends a `hello` at once. Connections that were using the old address will not survive it. Both hosts see the other's
+  `hello` and both change address, which is what makes this work without anyone being in charge.
 
 ---
 

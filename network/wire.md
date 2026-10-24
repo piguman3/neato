@@ -49,7 +49,7 @@ A payload is what a program hands to `conn:send` or `dpp.send`: a boolean, a num
 values that does not refer to itself. Frames cannot hold tables or arbitrary strings, so a payload is turned into one
 string, and sent in a frame as a single string value.
 
-The encoding has two steps. First the payload is walked depth-first and written as bytes, the *raw encoding*.
+The encoding has two steps. First the payload is walked depth-first and written as bytes, the _raw encoding_.
 Second, the raw encoding is turned into Base64 with the standard alphabet and `=` padding (`crypto.Base64`), so that it
 is made of bytes from `0x01` to `0x7F` only. The receiver reverses both steps.
 

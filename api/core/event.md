@@ -32,12 +32,12 @@ An event is a name (a string) followed by zero or more values.
 `core` defines the following events. Extensions define their own (for example, `ext.dpp` defines `dpp`). Event names
 that are not defined by a specification and do not start with `x.` are reserved.
 
-| Name      | Values                           | Description                                                                                           |
-| --------- | -------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| key       | key (string), isRepeat (boolean) | A key was pressed, or is being repeated while held down (`isRepeat` is `true`).                       |
-| key_up    | key (string)                     | A key was released.                                                                                   |
-| char      | character (string)               | A character was typed, after the keyboard layout and modifier keys were applied. One UTF-8 character. |
-| terminate | none                             | The user asked for the program to stop, or another program did through [`ext.proc`](proc.md). The gesture that causes this is up to the operating system.   |
+| Name      | Values                           | Description                                                                                                                                               |
+| --------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| key       | key (string), isRepeat (boolean) | A key was pressed, or is being repeated while held down (`isRepeat` is `true`).                                                                           |
+| key_up    | key (string)                     | A key was released.                                                                                                                                       |
+| char      | character (string)               | A character was typed, after the keyboard layout and modifier keys were applied. One UTF-8 character.                                                     |
+| terminate | none                             | The user asked for the program to stop, or another program did through [`ext.proc`](proc.md). The gesture that causes this is up to the operating system. |
 
 **Key names.** `key` and `key_up` use the name of the physical key without modifiers applied. Letters are lowercase
 (`"a"`), digits and symbol keys are the character on the key without shift (`"1"`, `"-"`), and the following named keys

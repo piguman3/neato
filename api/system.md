@@ -13,12 +13,12 @@ facts about the computer itself that programs such as `hostname`, `uname` and `u
 operating system's name and version are already covered by [`sys.getOSName` and
 `sys.getOSVersion`](core/sys.md); this extension covers the computer those programs run on.
 
-| Name               | Description                                                                                     | Arguments       | Returns                            |
-| ------------------ | ----------------------------------------------------------------------------------------------- | --------------- | ---------------------------------- |
-| system.hostname    | Returns the computer's hostname.                                                                | none            | hostname (string)                  |
-| system.setHostname | Sets the computer's hostname. May be refused.                                                   | hostname (string)| true, or nil, code and message    |
-| system.machine     | Returns a short lowercase name for the kind of computer, or `nil` when there is no meaningful answer. | none       | machine (string), or nil           |
-| system.uptime      | Returns the number of seconds since the operating system started.                                | none            | seconds (number)                   |
+| Name               | Description                                                                                           | Arguments         | Returns                        |
+| ------------------ | ----------------------------------------------------------------------------------------------------- | ----------------- | ------------------------------ |
+| system.hostname    | Returns the computer's hostname.                                                                      | none              | hostname (string)              |
+| system.setHostname | Sets the computer's hostname. May be refused.                                                         | hostname (string) | true, or nil, code and message |
+| system.machine     | Returns a short lowercase name for the kind of computer, or `nil` when there is no meaningful answer. | none              | machine (string), or nil       |
+| system.uptime      | Returns the number of seconds since the operating system started.                                     | none              | seconds (number)               |
 
 The hostname names this computer on a network of computers. It is a non-empty string, it may change while a program
 runs, and a program that wants to know it again must ask again.
@@ -39,11 +39,11 @@ name, so it may have a fractional part.
 
 ### Failure codes
 
-| Function            | Condition                                     | Code     |
-| ------------------- | --------------------------------------------- | -------- |
-| system.setHostname  | the name is empty                             | `EINVAL` |
-| system.setHostname  | the name is too long, or will not be stored   | `ELIMIT` |
-| system.setHostname  | the change is not allowed                     | `EACCES` |
+| Function           | Condition                                   | Code     |
+| ------------------ | ------------------------------------------- | -------- |
+| system.setHostname | the name is empty                           | `EINVAL` |
+| system.setHostname | the name is too long, or will not be stored | `ELIMIT` |
+| system.setHostname | the change is not allowed                   | `EACCES` |
 
 ---
 

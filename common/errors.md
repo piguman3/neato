@@ -50,7 +50,7 @@ must not return a code that is not in this table, and a program must be ready to
 | `EFBIG`        | The file is too large.                                                                    |
 | `EHOSTUNREACH` | There is no route to the host.                                                            |
 | `EINTR`        | The operation was stopped before it finished, by a terminate request.                     |
-| `EINVAL`       | An argument value is not valid.                                                           |
+| `EINVAL`       | An argument value is not valid, for reasons other than type.                              |
 | `EIO`          | An input/output error happened, and no other code fits.                                   |
 | `EISDIR`       | The path is a directory where a file was expected.                                        |
 | `ELIMIT`       | A limit of the specification or the operating system was reached.                         |

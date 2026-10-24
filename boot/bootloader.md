@@ -42,14 +42,14 @@ in `boot.lua`.
 
 Each entry in `Bootlist` is a table with the following fields:
 
-| Field                              | Type                | Required | Description                                                                                                                                                        |
-| ---------------------------------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| OS Name                            | string              | yes      | The name of the operating system. Displayed by the bootloader to identify the entry.                                                                               |
-| OS Version                         | string              | no       | The version of the operating system, displayed next to the name. It is recommended to use [semver](https://semver.org/) versioning.                                |
-| OS Description                     | string              | no       | A short human-readable description of the entry, displayed by the bootloader.                                                                                      |
-| OS Args                            | table of strings    | no       | The arguments passed to the boot path. If absent, no arguments are passed.                                                                                         |
+| Field                              | Type                | Required | Description                                                                                                                                                                                                        |
+| ---------------------------------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| OS Name                            | string              | yes      | The name of the operating system. Displayed by the bootloader to identify the entry.                                                                                                                               |
+| OS Version                         | string              | no       | The version of the operating system, displayed next to the name. It is recommended to use [semver](https://semver.org/) versioning.                                                                                |
+| OS Description                     | string              | no       | A short human-readable description of the entry, displayed by the bootloader.                                                                                                                                      |
+| OS Args                            | table of strings    | no       | The arguments passed to the boot path. If absent, no arguments are passed.                                                                                                                                         |
 | OS Boot Path                       | string              | yes      | The full path optionally, or, the path without the disk number in the format defined in [paths.md](../common/paths.md), of the Lua file that is run to boot the entry. It should use a disk ID rather than a slot. |
-| OS Environment Variable Definition | table (string keys) | no       | The environment variables made visible to the boot path. If absent, none are defined.                                                                              |
+| OS Environment Variable Definition | table (string keys) | no       | The environment variables made visible to the boot path. If absent, none are defined.                                                                                                                              |
 
 An entry that is missing a required field, or has a field of the wrong type, is invalid and must not be booted. A
 bootloader must ignore fields it does not recognize, so that entries may carry extra information for the operating

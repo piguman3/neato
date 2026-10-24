@@ -18,20 +18,20 @@ deliberately not part of version 1.
 
 A user is described by a table:
 
-| Field    | Type             | Meaning                                                                                                  |
-| -------- | ---------------- | -------------------------------------------------------------------------------------------------------- |
-| `id`     | int              | The user's id, chosen by the operating system. There is no reserved id: whether a user is an administrator is the `admin` field, never the id. |
-| `name`   | string           | The login name.                                                                                           |
-| `admin`  | boolean          | Whether the user is an administrator. An operating system may have any number of administrators, or none.  |
+| Field    | Type             | Meaning                                                                                                                                                    |
+| -------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`     | int              | The user's id, chosen by the operating system. There is no reserved id: whether a user is an administrator is the `admin` field, never the id.             |
+| `name`   | string           | The login name.                                                                                                                                            |
+| `admin`  | boolean          | Whether the user is an administrator. An operating system may have any number of administrators, or none.                                                  |
 | `home`   | string, optional | A full [path](../common/paths.md), ending in `/`, to the user's home directory. It may not exist. `nil` when the operating system has no home directories. |
-| `groups` | table, optional  | The ids of the groups the user belongs to, when the operating system has groups.                           |
+| `groups` | table, optional  | The ids of the groups the user belongs to, when the operating system has groups.                                                                           |
 
-| Name        | Description                                                            | Arguments       | Returns                              |
-| ----------- | ---------------------------------------------------------------------- | --------------- | ------------------------------------ |
-| user.current| Returns the account this program runs as.                              | none            | user (table)                         |
-| user.byName | Returns the account with the given name, or `nil` if there is none.    | name (string)   | user (table), or nil                 |
-| user.byId   | Returns the account with the given id, or `nil` if there is none.      | id (int)        | user (table), or nil                 |
-| user.list   | Returns every account the program may see, in no particular order.     | none            | users (table of user tables)         |
+| Name         | Description                                                         | Arguments     | Returns                      |
+| ------------ | ------------------------------------------------------------------- | ------------- | ---------------------------- |
+| user.current | Returns the account this program runs as.                           | none          | user (table)                 |
+| user.byName  | Returns the account with the given name, or `nil` if there is none. | name (string) | user (table), or nil         |
+| user.byId    | Returns the account with the given id, or `nil` if there is none.   | id (int)      | user (table), or nil         |
+| user.list    | Returns every account the program may see, in no particular order.  | none          | users (table of user tables) |
 
 A single-user operating system reports this extension too: it has one user, and every function answers from that
 one account. `user.list` may hold fewer accounts than exist when the operating system hides some from this program;
