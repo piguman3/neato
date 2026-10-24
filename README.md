@@ -40,7 +40,7 @@ There are three kinds of name:
 | `ext.<name>`        | A standard extension, defined by a specification in this repository. Example: `ext.screen`. |
 | `x.<vendor>.<name>` | A non-standard extension defined by an OS or a third party. Example: `x.neetos.windows`.    |
 
-For contributions regarding non-standard extensions, 
+For contributions regarding non-standard extensions, you can check out the [vendor/README.md](vendor/README.md) file for more information.
 
 Names are case sensitive and every segment consists only of letters and digits.
 
