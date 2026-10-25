@@ -10,4 +10,6 @@ Third-party standards are found in this directory. Contributions are open to any
 
 # List
 
-*Currently as of this moment, there are no documented vendor extensions in this repo.*
+| Project                                    | Vendor Folder                                                           |
+| ------------------------------------------ | ----------------------------------------------------------------------- |
+| [Lame](https://github.com/rabiesland/Lame) | [vendor/lame/](https://github.com/piguman3/neato/tree/main/vendor/lame) |
