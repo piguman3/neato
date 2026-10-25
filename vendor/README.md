@@ -10,6 +10,6 @@ Third-party standards are found in this directory. Contributions are open to any
 
 # List
 
-| Name      | Vendor Folder                                                           |
-| --------- | ----------------------------------------------------------------------- |
-| Lame      | [vendor/lame/](https://github.com/piguman3/neato/tree/main/vendor/Lame) |
+| Project                                    | Vendor Folder                                                           |
+| ------------------------------------------ | ----------------------------------------------------------------------- |
+| [Lame](https://github.com/rabiesland/Lame) | [vendor/lame/](https://github.com/piguman3/neato/tree/main/vendor/lame) |
