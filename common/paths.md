@@ -4,7 +4,7 @@ Written by piguman3
 
 Extension: `core`
 
-Version: 3
+Version: 4
 
 ---
 

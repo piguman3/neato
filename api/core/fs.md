@@ -2,7 +2,7 @@
 
 Extension: `core`
 
-Version: 3
+Version: 4
 
 ---
 
@@ -77,9 +77,9 @@ itself afterwards.
 
 | Field   | Type          | Meaning                                                                                                                                           |
 | ------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`  | string        | `"file"` or `"dir"`. `"other"` covers everything else (for example a device). `"link"` is used only by the [`ext.symlink`](symlink.md) extension. |
+| `type`  | string        | `"file"` or `"dir"`. `"other"` covers everything else (for example a device). `"link"` is used only by the [`ext.symlink`](../symlink.md) extension. |
 | `size`  | int, optional | The size in bytes. `nil` when the object has no meaningful size (a directory, for example) or the operating system does not report one.           |
-| `mtime` | int, optional | The last modification time, in seconds on the [`ext.time`](time.md) wall clock. `nil` when the operating system does not track times.             |
+| `mtime` | int, optional | The last modification time, in seconds on the [`ext.time`](../time.md) wall clock. `nil` when the operating system does not track times.             |
 
 Fields that are not listed here may be present when an extension that defines them is reported (for example
 [`ext.perms`](../perms.md)). A program must ignore any field it does not know. A missing optional field and a field the

@@ -92,7 +92,7 @@ When a message arrives for a port that a program is listening on, that program r
 
 `dpp` (payload, source_address, source_port)
 
-through [`event`](../api/event.md).
+through [`event`](../api/core/event.md).
 
 ---
 

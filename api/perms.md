@@ -9,7 +9,7 @@ Requires: `core`, `ext.user`
 ---
 
 A NEATO compliant operating system that reports this extension must provide permission bits for the objects of its
-[`fs`](fs.md) filesystem, and a global set of `fs` functions to read and change them. This is the Unix model in its
+[`fs`](core/fs.md) filesystem, and a global set of `fs` functions to read and change them. This is the Unix model in its
 smallest useful form, and an operating system that has no ownership or permissions at all, such as one where every
 program may do everything, does not report this extension at all.
 
