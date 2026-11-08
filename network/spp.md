@@ -35,7 +35,7 @@ An operating system that reports `ext.spp` must provide the `spp` API described 
   [Peer identity](#peer-identity)). The operating system fills this in. A program cannot choose it.
 - A program decides whether a listener can be reached from other computers. The default is that it cannot (see
   [Scope](#scope)). Local traffic never touches a network medium.
-- Every connection has its own inbox. SPP does not use the [event queue](../api/event.md) at all, so it can neither
+- Every connection has its own inbox. SPP does not use the [event queue](../api/core/event.md) at all, so it can neither
   fill it up nor lose data to `event.pull` filters. A full inbox slows the sender down, it never drops a message.
 - Listeners and connections can be waited on together, and together with the event queue (see [Polling](#polling)).
 
@@ -51,7 +51,7 @@ An operating system that reports `ext.spp` must provide the `spp` API described 
 | message    | One payload, sent with `conn:send` and received as one unit with `conn:recv`.                              |
 | inbox      | The bounded queue of received, not yet read messages that belongs to one connection.                       |
 
-Listeners and connections are handles in the same sense as the handles returned by [`fs.open`](../api/fs.md): tables
+Listeners and connections are handles in the same sense as the handles returned by [`fs.open`](../api/core/fs.md): tables
 with methods that are called with `:`. Calling a method on a closed handle raises an error. Handles that are still open
 when the program ends are closed by the operating system, as if the program had called `close`.
 
@@ -169,7 +169,7 @@ A handle counts as readable when the matching call would not have to wait:
 | -------------------- | ----------------------------------------------------------------------------------------------------- |
 | listener             | A connection is waiting for `accept`.                                                                 |
 | connection           | `conn:recv` has something to return: a message is in the inbox, or the connection is closed or reset. |
-| the string `"event"` | The program's [event queue](../api/event.md) has at least one event. Nothing is removed from it.      |
+| the string `"event"` | The program's [event queue](../api/core/event.md) has at least one event. Nothing is removed from it.      |
 
 A connection counts as writable when `conn:send` would not have to wait: the peer's inbox has room, or the
 connection is closed or reset (in which case `send` fails immediately).

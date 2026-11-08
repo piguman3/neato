@@ -13,8 +13,9 @@ accounts it has and the account the calling program runs as. It answers who the 
 that programs such as `whoami`, `id` and `ls` can name users, and so that an operating system can ground its
 "may this program do that" decisions in an identity instead of in one flag for the whole computer.
 
-Nothing in this specification is about logging in. Asking for a password and starting a program as another user is
-deliberately not part of version 1.
+Nothing in this specification is about logging in. Asking for a password and switching which user a program runs as
+is [`ext.auth`](auth.md)'s work, and starting a program as another user is defined by no extension; both are
+deliberately left out of version 1.
 
 A user is described by a table:
 
@@ -62,7 +63,7 @@ print(table.concat(names, ", "))
 
 ### Footnotes
 
-On passwords and switching users: an operating system that can authenticate a name and a password, and start a
-program as the matching user, is expected to define that in a future extension (`ext.auth` is reserved for it).
-Programs that need to know only whether they may do something should ask the operating system by trying, and read
-the `EACCES`, instead of deciding from `admin` themselves; `admin` is for display and for choosing what to offer.
+On passwords and switching users: [`ext.auth`](auth.md) verifies a password and switches the user this program runs
+as; starting another program as a different user is still defined by no extension. Programs that need to know only
+whether they may do something should ask the operating system by trying, and read the `EACCES`, instead of deciding
+from `admin` themselves; `admin` is for display and for choosing what to offer.

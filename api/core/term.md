@@ -4,7 +4,7 @@ Written by piguman3
 
 Extension: `core`
 
-Version: 3
+Version: 4
 
 ---
 
@@ -17,20 +17,21 @@ foreground color for text. This is aimed to be similar to the ComputerCraft `ter
 
 RGB values work the same as in the default NEET Computers API, going from 0 to 255.
 
-| Name                    | Description                                                                                                                                                                                                    | Arguments                 | Returns                   |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- | ------------------------- |
-| term.clear              | Clears the terminal screen with the current background color. The cursor does not move.                                                                                                                        | none                      | nil                       |
-| term.write              | Writes a string of text at the cursor with no formatting, and moves the cursor past it.                                                                                                                        | text (string)             | nil                       |
-| term.getSize            | Returns the current width and height of the terminal in characters.                                                                                                                                            | none                      | width (int), height (int) |
-| term.clearLine          | Clears the current line the cursor is on. The cursor does not move.                                                                                                                                            | none                      | nil                       |
-| term.setCursorPos       | Sets the cursor's position.                                                                                                                                                                                    | x (int), y (int)          | nil                       |
-| term.setBackgroundColor | Sets the background color to the provided RGB value.                                                                                                                                                           | r (int), g (int), b (int) | nil                       |
-| term.setTextColor       | Sets the foreground text color to the provided RGB value.                                                                                                                                                      | r (int), g (int), b (int) | nil                       |
-| term.getCursorPos       | Gets the cursor's position.                                                                                                                                                                                    | none                      | x (int), y (int)          |
-| term.getBackgroundColor | Gets the background color's RGB value.                                                                                                                                                                         | none                      | r (int), g (int), b (int) |
-| term.getTextColor       | Gets the foreground text color's RGB value.                                                                                                                                                                    | none                      | r (int), g (int), b (int) |
-| term.scroll             | Scrolls the entire screen vertically up by `n` lines (down if `n` is negative). The cursor does not move.                                                                                                      | n (int)                   | nil                       |
-| print                   | Prints all of its arguments (converted to strings), separated by a tab character (`\t`), as a formatted string of text on screen, starting a new line on `\n` and wrapping at the edge of the terminal screen. | args, ... (any)           | nil                       |
+| Name                    | Description                                                                                                                                                                                                    | Arguments                 | Returns                                   |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- | ----------------------------------------- |
+| term.clear              | Clears the terminal screen with the current background color. The cursor does not move.                                                                                                                        | none                      | nil                                       |
+| term.write              | Writes a string of text at the cursor with no formatting, and moves the cursor past it.                                                                                                                        | text (string)             | nil                                       |
+| term.getSize            | Returns the current width and height of the terminal in characters.                                                                                                                                            | none                      | width (int), height (int)                 |
+| term.clearLine          | Clears the current line the cursor is on. The cursor does not move.                                                                                                                                            | none                      | nil                                       |
+| term.setCursorPos       | Sets the cursor's position.                                                                                                                                                                                    | x (int), y (int)          | nil                                       |
+| term.setBackgroundColor | Sets the background color to the provided RGB value.                                                                                                                                                           | r (int), g (int), b (int) | nil                                       |
+| term.setTextColor       | Sets the foreground text color to the provided RGB value.                                                                                                                                                      | r (int), g (int), b (int) | nil                                       |
+| term.getCursorPos       | Gets the cursor's position.                                                                                                                                                                                    | none                      | x (int), y (int)                          |
+| term.getBackgroundColor | Gets the background color's RGB value.                                                                                                                                                                         | none                      | r (int), g (int), b (int)                 |
+| term.getTextColor       | Gets the foreground text color's RGB value.                                                                                                                                                                    | none                      | r (int), g (int), b (int)                 |
+| term.scroll             | Scrolls the entire screen vertically up by `n` lines (down if `n` is negative). The cursor does not move.                                                                                                      | n (int)                   | nil                                       |
+| term.readLine           | Reads one line typed on the terminal, with editing and echo. See [Reading a line](#reading-a-line).                                                                                                            | options (table?)          | line (string), or nil, code and message   |
+| print                   | Prints all of its arguments (converted to strings), separated by a tab character (`\t`), as a formatted string of text on screen, starting a new line on `\n` and wrapping at the edge of the terminal screen. | args, ... (any)           | nil                                       |
 
 ---
 
@@ -69,11 +70,42 @@ RGB values work the same as in the default NEET Computers API, going from 0 to 2
   screen first.
 
 - Passing an argument of the wrong type to any `term` function raises an error. No `term` function fails with an error
-  code: a mistake raises, and everything else succeeds, as described in [errors.md](../common/errors.md).
+  code except `term.readLine`, which fails with `EINTR` when the terminate event abandons the line being typed, as
+  [Reading a line](#reading-a-line) defines: a mistake raises, and everything else succeeds, as described in
+  [errors.md](../../common/errors.md).
 
-- When the operating system also reports [`ext.stdio`](stdio.md), `print` writes to the standard output instead of
-  the terminal, as [stdio.md](stdio.md) defines; when the standard output is not a terminal this replaces the wrapping
+- When the operating system also reports [`ext.stdio`](../stdio.md), `print` writes to the standard output instead of
+  the terminal, as [stdio.md](../stdio.md) defines; when the standard output is not a terminal this replaces the wrapping
   and scrolling described above. Every `term` function except `print` always acts on the terminal itself.
+
+---
+
+### Reading a line
+
+`term.readLine(options)` reads one line typed on the terminal and returns it without its newline. It always acts on
+the terminal itself, as every `term` function except `print` does, so it still talks to the user when the standard
+output is redirected somewhere else. It yields while the user types.
+
+The operating system lets the user edit the line while it is being typed, with the same minimum editing and echo
+[stdio.md](../stdio.md) defines. At minimum typing characters inserts them, backspace erases, and the typed text is
+drawn as it goes. The accepted line is what the user finished with the key that ends a line. Which program receives
+typed characters is the operating system's decision, as [event.md](event.md) defines for input events; `term.readLine`
+reads the line typed into this program, which is the one the operating system delivers input to (the one with focus,
+or the foreground job where the operating system supports job control).
+
+| Option    | Type            | Meaning                                                                                                                                     |
+| --------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `noecho`  | boolean         | Do not draw what the user types, for reading a password. The line is finished the same way.                                                 |
+| `history` | table of string | Previous lines. The accepted line is appended to this table, and keys that recall entries, such as the up and down arrows, move through it. |
+
+The options are the same ones [`stdio.readLine`](../stdio.md#reading-a-line) takes, with the same meanings. Passing
+anything other than a table as `options`, or an option of the wrong type, raises an error.
+
+While the user is typing, other events stay in the event queue, exactly as [stdio.md](../stdio.md) describes. If the
+terminate event arrives, the line being typed is abandoned, the terminate event is consumed by this call, and
+`term.readLine` fails with `EINTR`, the same answer [`stdio.readLine`](../stdio.md#reading-a-line) gives: a shell, for
+example, abandons the line, shows a fresh prompt, and keeps running. This is the only `term` function that fails with
+an error code. A terminal has no end of file, so `term.readLine` never returns `nil` for any other reason.
 
 ---
 
@@ -84,6 +116,17 @@ term.setBackgroundColor(0, 0, 0)
 term.clear()
 term.setCursorPos(1, 1)
 print("Hello, World!")
+```
+
+```lua
+while true do
+  term.write("> ")
+  local line, code = term.readLine()
+  if code == "EINTR" then
+  else
+    print("you said: " .. line)
+  end
+end
 ```
 
 ---

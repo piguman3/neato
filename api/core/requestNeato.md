@@ -2,7 +2,7 @@
 
 Extension: `core`
 
-Version: 1
+Version: 4
 
 ---
 

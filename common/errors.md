@@ -2,7 +2,7 @@
 
 Extension: `core`
 
-Version: 3
+Version: 4
 
 ---
 
@@ -41,6 +41,7 @@ must not return a code that is not in this table, and a program must be ready to
 | -------------- | ----------------------------------------------------------------------------------------- |
 | `EACCES`       | The program is not allowed to access the object, because of the permissions on it.        |
 | `EADDRINUSE`   | The port is already in use.                                                               |
+| `EAUTH`        | The name and the password given do not match any account.                                 |
 | `EBADF`        | The handle is not open for that operation.                                                |
 | `EBUSY`        | The object is in use and cannot be changed right now.                                     |
 | `ECHILD`       | The process is not a child of the calling program, or has already been waited for.        |

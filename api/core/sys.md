@@ -4,7 +4,7 @@ Written by UsUsStudios
 
 Extension: `core`
 
-Version: 3
+Version: 4
 
 ---
 
@@ -42,7 +42,7 @@ print(sys.hasExtension("ext.dpp"))
 ```
 
 ```lua
-print(sys.hasExtension("core", 2))
+print(sys.hasExtension("core", 4))
   -> true
 ```
 
@@ -50,6 +50,6 @@ print(sys.hasExtension("core", 2))
 for name, version in pairs(sys.getExtensions()) do
   print(name, version)
 end
-  -> core  2
+  -> core  4
      ext.screen  1
 ```
