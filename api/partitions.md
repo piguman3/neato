@@ -13,7 +13,8 @@ same functions, parameters and return types as the NEET Computers API. In stock 
 the global `files`, mixed in with the file functions; NEATO's [`fs`](core/fs.md) deliberately does not carry them, and
 this extension gives them a global of their own. The name is of the hardware, not of paths: its functions take disk
 slots and partition names, which is machine-level work, and `fs` is a view an operating system builds on top of what
-they manage.
+they manage. The one kind of path its functions take, the boot entrypoint, is a NEET path on the disk named by the
+`disk` parameter, not a NEATO [path](../common/paths.md); [Boot selection](#boot-selection) describes its exact form.
 
 `partitions` keeps the NEET Computers API unchanged, including how it reports its own failures. A failure is a Lua
 error with a plain string message, and there is nothing for an operating system to redirect. The two things an
@@ -71,7 +72,7 @@ partitions
 | partitions.removeDisk       | Ejects a disk, as if it were pulled from its drive bay. The machine's own disk cannot be ejected.                    | disk (int)                             | removed (boolean)       |
 | partitions.getBootPath      | Returns the entrypoint the disk boots from, or nil when it does not boot.                                            | disk (int)                             | path (string), or nil   |
 | partitions.setBoot          | Makes the disk bootable from `entrypoint`, a path on that disk.                                                      | entrypoint (string), disk (int)        | set (boolean)           |
-| partitions.setBoot          | Removes a disk's bootability, returning whether it was bootable before. The machine's own disk cannot be un-booted this way. | disk (int)                     | was (boolean)           |
+| partitions.setBoot          | Makes a disk stop booting, returning whether it was bootable before; the machine's own disk answers `false` and keeps its boot selection. | disk (int)                     | was (boolean)           |
 
 Every partition function takes its disk as an optional trailing argument, and the omitted disk is the machine's own,
 slot 0. A disk number that is not attached fails every function that takes one with `Disk not found`, as
@@ -114,9 +115,10 @@ A disk that boots carries an entrypoint: the path, on that disk, of the file the
 on. `partitions.getBootPath` and `partitions.setBoot` pass this selection through. `setBoot(entrypoint, disk)` makes
 the disk boot from `entrypoint`. A path that is not valid, or whose first name is not a partition of the disk, is an
 error; on the machine's own disk the file must already exist, and a missing one is answered with `false` rather than
-an error. On any other disk the file does not have to exist yet. `setBoot(disk)`, given only a number, removes the
-disk's bootability and returns whether it was bootable before; the machine's own disk cannot be un-booted this way,
-and answers `false`. An honored call returns `true`.
+an error. On any other disk the file does not have to exist yet. Called with only the disk number,
+`setBoot(disk)` makes that disk stop booting and returns whether it was bootable before; a call that takes effect
+returns `true`. The machine's own disk is the one exception. It refuses this form, answering `false` and keeping
+whatever boot selection it has.
 
 The path `partitions.getBootPath` answers, and `partitions.setBoot` accepts, is the disk's own entrypoint path in
 NEET's normalized form, backslashes and all; it is passed through, not converted into the NEATO
@@ -141,14 +143,12 @@ user is an administrator (see [ext.user](user.md)), or always. Which programs ma
 call was blocked, is entirely the operating system's policy and is not defined here.
 
 A blocked call must have no effect: no partition is created, changed or deleted, no disk is ejected, no boot
-selection changes, and the program that made the call must keep running. A blocked call must also fail in a way the
-program can detect: it raises a Lua error, carrying a plain string message the operating system chooses. A program
-that is allowed the call gets exactly the NEET Computers behavior.
+selection changes. A blocked call raises a Lua error, carrying a plain string message the operating system chooses;
+a program that is allowed the call gets exactly the NEET Computers behavior.
 
-The error, rather than the nil, code and message convention of [errors.md](../common/errors.md), is chosen because
+The error, rather than the nil, code and message convention of [errors.md](../common/errors.md), is because
 `partitions` is a raw passthrough extension like [ext.chip](chip.md) and keeps NEET's own failure reporting, which
-is errors with plain string messages. It also cannot be ignored by accident: an uncaught error stops the program,
-so a script that was denied cannot carry on as if it had deleted a partition.
+is errors with plain string messages.
 
 The other functions must always work when this extension is reported. `partitions.getPartitions`,
 `partitions.getPartition`, `partitions.getNumberOfDisks`, `partitions.getDisks`, `partitions.getDiskID` and

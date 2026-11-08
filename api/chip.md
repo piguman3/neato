@@ -85,17 +85,14 @@ program's user is an administrator (see [ext.user](user.md)), or always. The rul
 not be left a path to the others. Which programs may call these functions, and why a call was blocked, is entirely
 the operating system's policy and is not defined here.
 
-A blocked call must have no effect: the computer must not power off, must not reboot and must not crash, and the
-program that made the call must keep running. A blocked call must also fail in a way the program can detect: it
-raises a Lua error, carrying a plain string message the operating system chooses. A program that is allowed the
-call gets exactly the NEET Computers behavior: the computer powers off, reboots, or crashes with `message` as the
-reason on the crash screen. The call itself returns like any other; the power off, reboot or crash follows on the
-computer's own schedule.
+A blocked call must have no effect: the computer must not power off, must not reboot and must not crash. A blocked
+call raises a Lua error, carrying a plain string message the operating system chooses; a program that is allowed
+the call gets exactly the NEET Computers behavior. A program that is denied knows its call was blocked because it
+is still running. Had the call gone through, it would not be.
 
-The error, rather than the nil, code and message convention of [errors.md](../common/errors.md), is chosen because
-`chip` is a raw passthrough extension like [ext.screen](screen.md) and keeps NEET's own failure reporting, which
-is errors with plain string messages. It also cannot be ignored by accident: an uncaught error stops the program,
-so a script that was denied cannot carry on as if it had shut the computer down.
+The error, rather than the nil, code and message convention of [errors.md](../common/errors.md), is because `chip`
+is a raw passthrough extension like [ext.screen](screen.md) and keeps NEET's own failure reporting, which is
+errors with plain string messages.
 
 The other functions must always work when this extension is reported. `chip.version`, `chip.getMachine`,
 `chip.getUUID`, `chip.getTime`, `chip.getUnixTime`, `chip.getLunarTime` and `chip.sleep` are not destructive, and

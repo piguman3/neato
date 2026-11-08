@@ -9,11 +9,10 @@ Requires: `core`, `ext.proc`
 ---
 
 A NEATO compliant operating system that reports this extension must provide a global `job` API for grouping programs
-into jobs and for choosing which job uses the terminal. [`ext.proc`](proc.md) ends by leaving exactly this to "a
-future extension": a shell can already run a pipeline and wait for it, but which program receives keys and the
-terminate event is, without this extension, the operating system's undisclosed decision. This extension is the future
-extension it asks for. It adds the group a pipeline runs as, a definable answer to who gets the terminal, and a way
-to end a group as one.
+into jobs and for choosing which job uses the terminal. [`ext.proc`](proc.md) ends by naming this extension as the
+one its footnote waits for. A shell can already run a pipeline and wait for it, but which program receives keys and
+the terminate event is, without [`ext.job`](job.md), the operating system's undisclosed decision. This extension adds
+the group a pipeline runs as, the answer to who gets the terminal, and a way to end a group as one.
 
 A job is a group of processes. Every process belongs to exactly one job at any moment, from the moment it starts to
 the moment it finishes. A process starts in a job of its own that contains only itself, and a program gathers its
@@ -26,16 +25,6 @@ the job is gone, as it may a pid. A job is gone when its last member finishes; a
 gone when the program that created it finishes. Every function of this API that takes a jid fails with `EINVAL` when
 no job has it.
 
-| Name              | Description                                                                     | Arguments                | Returns                             |
-| ----------------- | ------------------------------------------------------------------------------- | ------------------------ | ----------------------------------- |
-| job.create        | Creates a job with no members. The calling program becomes its owner.           | none                     | jid (int), or nil, code and message |
-| job.join          | Moves one of this program's children into a job this program owns.              | jid (int), pid (int)     | true, or nil, code and message      |
-| job.current       | Returns the job this program belongs to.                                        | none                     | jid (int)                           |
-| job.getForeground | Returns the jid of the foreground job, or `nil` when no job is foreground.      | none                     | jid (int), or nil                   |
-| job.setForeground | Makes a job the foreground job.                                                 | jid (int)                | true, or nil, code and message      |
-| job.setBackground | Clears the foreground designation when the job holds it.                        | jid (int)                | true, or nil, code and message      |
-| job.kill          | Stops every member of a job. See [Stopping a job](#stopping-a-job).             | jid (int), how (string?) | true, or nil, code and message      |
-
 ```c
 job
   create
@@ -46,6 +35,16 @@ job
   setBackground
   kill
 ```
+
+| Name              | Description                                                                     | Arguments                | Returns                             |
+| ----------------- | ------------------------------------------------------------------------------- | ------------------------ | ----------------------------------- |
+| job.create        | Creates a job with no members. The calling program becomes its owner.           | none                     | jid (int), or nil, code and message |
+| job.join          | Moves one of this program's children into a job this program owns.              | jid (int), pid (int)     | true, or nil, code and message      |
+| job.current       | Returns the job this program belongs to.                                        | none                     | jid (int)                           |
+| job.getForeground | Returns the jid of the foreground job, or `nil` when no job is foreground.      | none                     | jid (int), or nil                   |
+| job.setForeground | Makes a job the foreground job.                                                 | jid (int)                | true, or nil, code and message      |
+| job.setBackground | Clears the foreground designation when the job holds it.                        | jid (int)                | true, or nil, code and message      |
+| job.kill          | Stops every member of a job. See [Stopping a job](#stopping-a-job).             | jid (int), how (string?) | true, or nil, code and message      |
 
 ---
 
@@ -77,17 +76,16 @@ At most one job at a time is the foreground job. Every other job is a background
 input goes while no job is foreground, is up to the operating system.
 
 The rule of this extension: only the programs of the foreground job receive the input events
-[event.md](core/event.md) defines, which are `key`, `key_up` and `char`. [event.md](core/event.md) leaves "which
-program receives input events such as key presses" to the operating system; this extension makes the choice
-definable by shrinking the pool to one job. Which of the foreground job's programs receives each event is still up
-to the operating system, as [event.md](core/event.md) allows among programs. This is the decision
-[`term.readLine`](core/term.md) points at where it says a line is typed into "the foreground job where the operating
-system supports job control", and the same rule governs what [`stdio.readLine`](stdio.md) reads from a terminal.
+[event.md](core/event.md) defines, which are `key`, `key_up` and `char`; this is the choice
+[event.md](core/event.md) leaves to the operating system, made definable by shrinking the pool to one job. Which of
+the foreground job's programs receives each event is still up to the operating system, as [event.md](core/event.md)
+allows among programs. This is the decision [`term.readLine`](core/term.md) points at where it says a line is typed
+into "the foreground job where the operating system supports job control", and the same rule governs what
+[`stdio.readLine`](stdio.md) reads from a terminal.
 
-A background job keeps running: nothing about being background slows it down. It receives no typed input, so a
-background program that reads a terminal keeps waiting, exactly as any terminal read waits for the user to type, and
-the same is true of `stdio.readLine` and `term.readLine` in it. Nothing in this extension restricts what a
-background program may write to the terminal.
+A background job keeps running: nothing about being background slows it down, and nothing restricts what it may
+write to the terminal. It receives no typed input, so a background program reading a terminal keeps waiting, as any
+terminal read does; `stdio.readLine` and `term.readLine` included.
 
 Two things the rule does not touch:
 

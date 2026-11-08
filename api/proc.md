@@ -190,5 +190,5 @@ end
 
 On process groups, sessions and job control: a shell can run a pipeline and wait for it with this extension alone,
 and the operating system decides which program receives keys and the terminate event, as
-[event.md](core/event.md) allows. Anything finer, such as moving a running job between the foreground and the
-background, needs more than this specification gives, and is left to a future extension.
+[event.md](core/event.md) allows. [`ext.job`](job.md) is the future extension this leaves room for. Jobs, the
+foreground job and terminal input, stopping a job as one. Sessions are still defined by no extension.
