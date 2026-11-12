@@ -22,10 +22,10 @@ auth
   switch
 ```
 
-| Name        | Description                                                                                                                     | Arguments                        | Returns                           |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------------- |
-| auth.verify | Returns whether the password is the correct one for the named user.                                                              | name (string), password (string) | boolean, or nil, code and message |
-| auth.switch | Checks the pair and, when it is correct, makes the named user the user this program runs as, from the moment the call succeeds. | name (string), password (string) | true, or nil, code and message    |
+| Name         | Description                                                                                                                     | Arguments                        | Returns                           |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | --------------------------------- |
+| auth.verify  | Returns whether the password is the correct one for the named user.                                                              | name (string), password (string) | boolean, or nil, code and message |
+| auth.switchu | Checks the pair and, when it is correct, makes the named user the user this program runs as, from the moment the call succeeds. | name (string), password (string) | true, or nil, code and message    |
 
 `name` is a login name, as [ext.user](user.md) defines them, and `password` is the password as the user would type it.
 Both must be strings, and anything else raises an error. A name that no account has is not a mistake of use: it is
@@ -51,7 +51,7 @@ reason the check cannot be made is `EIO`, as [Failure codes](#failure-codes) lis
 
 ### Switching
 
-`auth.switch(name, password)` makes the check `auth.verify` makes and, when the pair is correct, makes the account
+`auth.switchu(name, password)` makes the check `auth.verify` makes and, when the pair is correct, makes the account
 named `name` the account this program runs as. It returns `true` when it has, and `nil`, a code and a message when it
 has not, and a switch that fails changes nothing: the program stays the user it was.
 
@@ -97,7 +97,7 @@ before any password is looked at. A program that is answered `EACCES` has learne
 ### Secrecy
 
 A failed authentication must not reveal whether the name exists. Wrong name and wrong password have the same answer,
-`false` from `auth.verify`, `EAUTH` from `auth.switch`, and the message must not say which of the two it was, because
+`false` from `auth.verify`, `EAUTH` from `auth.switchu`, and the message must not say which of the two it was, because
 a message that did would let a program prove an account exists by telling the answers apart. It is the rule
 [ext.peripherals](peripherals.md) states for a hidden peripheral, that a hidden thing is answered exactly like a
 missing one, applied to accounts.
@@ -106,7 +106,7 @@ Passwords are write-only knowledge. No function of this API returns a password, 
 one without being given it to check. How an operating system stores, hashes or checks its passwords is entirely its
 business, and nothing here requires any particular way of it, [`crypto`](core/crypto.md) included.
 
-`auth.verify` and `auth.switch` SHOULD take a moment to answer, about half a second, right or wrong alike. A
+`auth.verify` and `auth.switchu` SHOULD take a moment to answer, about half a second, right or wrong alike. A
 program that is answered instantly can try passwords far faster than any human could type them. An operating
 system MAY also slow down or lock out repeated failures. That is policy, not API: this specification defines no code
 and no function for it, and a refused attempt is answered like a failed one, the same `false` or the same `EAUTH` as
@@ -116,13 +116,13 @@ rate-limited answer makes conspicuously longer.
 
 ### Failure codes
 
-| Function    | Condition                                                            | Code     |
-| ----------- | -------------------------------------------------------------------- | -------- |
-| auth.verify | the operating system does not allow this program to verify that user | `EACCES` |
-| auth.verify | the check cannot be made for another reason                          | `EIO`    |
-| auth.switch | the name and the password do not match, or no account has the name   | `EAUTH`  |
-| auth.switch | the operating system does not allow this program to switch to that user | `EACCES` |
-| auth.switch | the switch cannot be made for another reason                         | `EIO`    |
+| Function     | Condition                                                            | Code     |
+| ------------ | -------------------------------------------------------------------- | -------- |
+| auth.verify  | the operating system does not allow this program to verify that user | `EACCES` |
+| auth.verify  | the check cannot be made for another reason                          | `EIO`    |
+| auth.switchu | the name and the password do not match, or no account has the name   | `EAUTH`  |
+| auth.switchu | the operating system does not allow this program to switch to that user | `EACCES` |
+| auth.switchu | the switch cannot be made for another reason                         | `EIO`    |
 
 `auth.verify` has no row for a wrong name or password, because that is not a failure but the ordinary answer `false`.
 `EAUTH` is used for that one condition and nothing else, by every function of this API that can report it.
@@ -140,7 +140,7 @@ while true do
   print()
 
   if auth.verify(name, password) then
-    assert(auth.switch(name, password))
+    assert(auth.switchu(name, password))
     print("welcome, " .. user.current().name)
     return
   end
@@ -153,7 +153,7 @@ local name = ...
 stdio.stdout:write("password: ")
 local password = stdio.readLine({ noecho = true })
 print()
-local ok, code = auth.switch(name, password)
+local ok, code = auth.switchu(name, password)
 if not ok then
   print("su: " .. (code == "EAUTH" and "authentication failed" or "not allowed"))
   proc.exit(1)
